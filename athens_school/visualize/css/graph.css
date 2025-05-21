@@ -1,0 +1,57 @@
+.node {
+    stroke: #fff;
+    stroke-width: 1.5px;
+}
+
+.node .selected {
+    fill: rgb(255, 166, 0) !important;
+}
+
+.node .search-match {
+    fill: red;
+}
+
+.link {
+    stroke: #999;
+}
+
+.link .influences {
+    stroke: rgb(255, 166, 0);
+}
+
+.link .influenced-by {
+    stroke: #2af806;
+}
+
+#d3_selectable_force_directed_graph {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+#d3_selectable_force_directed_graph svg {
+    display: block;
+}
+
+@-webkit-keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0.6);
+    }
+
+    100% {
+        opacity: 100%;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+    }
+    100% {
+        opacity: 100%;
+    }
+}
