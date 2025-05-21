@@ -1,6 +1,6 @@
 # About Econ.
 
-
+Updating this as of 5/20/2025.
 
 ## Why?
 Philosophers don't think in isolation. They draw from their peers' work to make their own contribution, creating a web of ideas. The goal of this project was to make this visible using data analysis and visualization techniques.
