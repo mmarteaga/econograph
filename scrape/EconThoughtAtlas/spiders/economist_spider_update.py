@@ -9,10 +9,14 @@ class EconomistSpider(scrapy.Spider):
     start_urls = ['https://en.wikipedia.org/wiki/List_of_economists']
 
     def parse(self, response):
-        # Iterate through economist links
-        for economist_link in response.css('li > a[href^="/wiki/"]::attr(href)').extract():
-            url = response.urljoin(economist_link)
-            yield scrapy.Request(url, callback=self.parse_economist)
+    # Focus on the <div class="div-col"> portion that has only the alphabetical list
+        for link in response.css('div.div-col li a[href^="/wiki/"]::attr(href)').getall():
+            url = response.urljoin(link)
+            # Avoid links that are likely categories, topics, etc.
+            if not any(skip in url for skip in [
+            "List_of_", "Category:", "Economics", "Nobel", "School", "Index", "Template:", "File:"
+        ]):
+                yield scrapy.Request(url, callback=self.parse_economist)
 
     def parse_economist(self, response):
         data = {}
@@ -118,5 +122,5 @@ class EconomistSpider(scrapy.Spider):
         image_url = response.css('table.infobox.biography.vcard img::attr(src)').get()
         if image_url:
             image_url = response.urljoin(image_url)
-        return image_url
+        return image_url or []
 

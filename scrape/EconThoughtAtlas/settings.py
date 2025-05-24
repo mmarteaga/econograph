@@ -3,23 +3,31 @@
 # This configuration defines the crawling behavior for scraping economists'
 # biographical metadata from Wikipedia, including name, education, influences, and more.
 
-BOT_NAME = "econ_thought_atlas"
+BOT_NAME = 'EconThoughtAtlas'
 
-SPIDER_MODULES = ["econ_thought_atlas.spiders"]
-NEWSPIDER_MODULE = "econ_thought_atlas.spiders"
+SPIDER_MODULES = ['EconThoughtAtlas.spiders']
+NEWSPIDER_MODULE = 'EconThoughtAtlas.spiders'
 
-# Respect robots.txt
+# Identify the bot to websites
+USER_AGENT = 'EconThoughtAtlas (+http://www.econschoolproject.com)'
+
+# Obey robots.txt rules
 ROBOTSTXT_OBEY = True
 
-# Pipelines
+# Configure a delay for requests to prevent overloading Wikipedia
+# DOWNLOAD_DELAY = 1.0
+
+# Configure item pipelines
 ITEM_PIPELINES = {
-    "econ_thought_atlas.pipelines.EconThoughtAtlasPipeline": 300,
+    'EconThoughtAtlas.pipelines.EconThoughtAtlasPipeline': 300,
 }
 
-# Custom Middlewares (currently not used, but scaffolded)
-# SPIDER_MIDDLEWARES = {
-#     "econ_thought_atlas.middlewares.EconThoughtAtlasSpiderMiddleware": 543,
-# }
-# DOWNLOADER_MIDDLEWARES = {
-#     "econ_thought_atlas.middlewares.EconThoughtAtlasDownloaderMiddleware": 543,
-# }
+# Enable logging for debugging
+LOG_LEVEL = 'INFO'
+
+# AutoThrottle extension for polite crawling
+# AUTOTHROTTLE_ENABLED = True
+# AUTOTHROTTLE_START_DELAY = 5
+# AUTOTHROTTLE_MAX_DELAY = 60
+# AUTOTHROTTLE_TARGET_CONCURRENCY = 1.0
+# AUTOTHROTTLE_DEBUG = False
