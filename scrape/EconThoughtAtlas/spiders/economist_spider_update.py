@@ -118,5 +118,5 @@ class EconomistSpider(scrapy.Spider):
         image_url = response.css('table.infobox.biography.vcard img::attr(src)').get()
         if image_url:
             image_url = response.urljoin(image_url)
-        return image_url or []
+        return image_url
 

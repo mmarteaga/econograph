@@ -1,14 +1,11 @@
-# -*- coding: utf-8 -*-
-
-# Define here the models for your scraped items
-#
-# See documentation in:
-# https://docs.scrapy.org/en/latest/topics/items.html
-
 import scrapy
 
-
-class econ_thought_atlasItem(scrapy.Item):
+class EconThoughtAtlasItem(scrapy.Item):
+    """
+    Defines the structured data fields for economist entries scraped from Wikipedia.
+    These fields correspond to metadata commonly found in infoboxes of economist biographies.
+    See ref: https://docs.scrapy.org/en/latest/topics/items.html
+    """
     name = scrapy.Field()
     url = scrapy.Field()
     born = scrapy.Field()

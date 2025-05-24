@@ -1,22 +1,9 @@
-# About Econ.
-
-
-
 ## Why?
 Philosophers don't think in isolation. They draw from their peers' work to make their own contribution, creating a web of ideas. The goal of this project was to make this visible using data analysis and visualization techniques.
-
-
-
-This was inspired in part by similar work:
-
-
 
 In [this](http://coppelia.io/2012/06/graphing-the-history-of-philosophy/) very nice article,
 Simon Raper shows how he graphed the history of philosophy using philosopher's Wikipedia bio, in particular the "influenced" section.
 He notes that the graph could be improved by taking into account indirect influences rather than just direct ones, which is what I tried here.  
-
-
-
 
 [This](https://www.denizcemonduygu.com/philo/browse/) project by Deniz Cem Önduygu is quite different in nature,
 as the visualized information was compiled all by hand (which is amazing).
