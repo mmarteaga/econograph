@@ -1,51 +1,41 @@
-# About Econ.
-
-Updating this as of 5/20/2025.
+# About the Econonetwork
+#### Last updated: May 2025
 
 ## Why?
-Philosophers don't think in isolation. They draw from their peers' work to make their own contribution, creating a web of ideas. The goal of this project was to make this visible using data analysis and visualization techniques.
 
+Economists, like any other discipline, do not produce ideas in a vacuum. Their contributions build upon and influence one another, forming a complex and evolving web of intellectual history. The goal of this project is to uncover and visualize those interconnections—academic lineage, intellectual influence, and institutional affiliations—using structured data scraped from Wikipedia.
 
+Inspired by projects that have done similar work in philosophy, this effort brings the tools of data scraping, transformation, and network analysis to the history of economic thought. While some similar projects exist, they often focus on either manual curation or simple lists. Here, we aim to automate the data collection process at scale and create a reusable foundation for further historical, institutional, or theoretical investigations into the economics profession.
 
-This was inspired in part by similar work:
-
-
-
-In [this](http://coppelia.io/2012/06/graphing-the-history-of-philosophy/) very nice article,
-Simon Raper shows how he graphed the history of philosophy using philosopher's Wikipedia bio, in particular the "influenced" section.
-He notes that the graph could be improved by taking into account indirect influences rather than just direct ones, which is what I tried here.  
-
-
-
-
-[This](https://www.denizcemonduygu.com/philo/browse/) project by Deniz Cem Önduygu is quite different in nature,
-as the visualized information was compiled all by hand (which is amazing).
 
 ## How?
 
-### Scraping the data
-Using the alphabetic index of philosophers as a starting point,
-I parsed the "bio card" to get information about a philosopher and their influences.
-To uniquely identify a philosopher, I used Wikipedia's pageid, as urls were often not unique.
-Normalizing birth dates turned out to be a bit tricky.
-It's not obvious how to express "500BC" in an amount of milliseconds since 1970. I settled for a conversion of
-birth date string -> datetime64 -> 64bit signed integer of seconds before / after 1970.
+### Data Collection
 
-### Building the graph of philosophers</h3>
-After filtering some bad data points I found myself with a list of philosophers and their influences,
-which could quite easily be turned into a directed graph.
-I used the PageRank algorithm to get a measure of centrality for each node aka philosopher in the graph and stored the output as JSON.
+We begin by scraping Wikipedia’s [List of Economists](https://en.wikipedia.org/wiki/List_of_economists), which alphabetically indexes notable figures with individual articles. For each economist, we navigate to their page and extract structured information from the infobox and relevant HTML elements.
 
-### Visualization
-The final step was to visualize the graph and its centrality scores in a d3.js force-directed graph.
-A nice property of these graphs is that connected nodes are automatically drawn to each other, which leads to a natural clustering. Also its quite fun to drag around nodes.
+This is done using a custom Scrapy spider (`economists_v2`) with extraction logic tailored to the common patterns found in Wikipedia biographies.
+
+### (Optional) Building the Graph of Economists
+
+From the cleaned data, one can construct a directed graph where:
+
+- Nodes = individual economists
+- Edges = relationships such as “influenced by” or “doctoral advisor of”
+
+This can be extended by:
+- Applying PageRank or other centrality metrics
+- Visualizing the network using a force-directed graph (e.g., with D3.js)
 
 ## Disclaimer
-This visualization carries quite some bias. The bias of looking only at the English Wikipedia,
-the bias of looking only at philosophers with nicely scrapable bios,
-the bias of the algorithm and hyperparameters used for calculating centrality scores
-and lastly the noise added by my erratic Python programming.
-If you still want to use it to draw conclusions like "Plato is #1 I knew it!!", go ahead.    
+
+This project is subject to a number of limitations:
+- It is based solely on the English-language Wikipedia and its editorial choices
+- Some economists do not have structured or complete infobox data
+- Influence relationships are often incomplete or ambiguous
+- The scraper relies on heuristic parsing and may introduce noise
+
+Despite these caveats, the resulting dataset offers a compelling and scalable lens into the development of economic ideas and the scholars behind them. Use with curiosity—and caution.
 
 ## References & Credit
 This project uses
