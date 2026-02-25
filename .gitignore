@@ -1,0 +1,19 @@
+# Backups
+*.bak
+*.bak2
+*.bak3
+*.bak_prebio
+
+# LLM tagger checkpoint (internal, large)
+visualize_v3/js/llm_tagger_checkpoint.json
+
+# Logs
+*.log
+
+# Python
+__pycache__/
+*.pyc
+.env
+
+# OS
+.DS_Store

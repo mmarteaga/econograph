@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About - Econograph</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+            background: #f5f5f5;
+            padding: 20px;
+        }
+        .container {
+            max-width: 800px;
+            margin: 40px auto;
+            background: white;
+            padding: 40px;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            color: #666;
+            margin-bottom: 30px;
+        }
+        h2 {
+            margin-top: 30px;
+            margin-bottom: 15px;
+            font-size: 24px;
+        }
+        p {
+            line-height: 1.8;
+            color: #333;
+            margin-bottom: 15px;
+        }
+        ul {
+            margin-left: 20px;
+            line-height: 1.8;
+        }
+        code {
+            background: #f4f4f4;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-size: 0.9em;
+        }
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            margin: 20px 0;
+        }
+        .tech-badge {
+            background: #1f77b4;
+            color: white;
+            padding: 5px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+        }
+        .back-link {
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid #eee;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>About Econograph</h1>
+        <p class="subtitle">Mapping the intellectual network of economists</p>
+
+        <h2>What is this?</h2>
+        <p>
+            Econograph is an interactive visualization of the network of economists and their intellectual influences.
+            By scraping data from Wikipedia and applying network analysis algorithms, we can see how economic ideas
+            have flowed through history and identify the most influential thinkers in the field.
+        </p>
+
+        <h2>How it works</h2>
+        <p>The project consists of three stages:</p>
+
+        <h3>Stage 1: Data Collection</h3>
+        <p>
+            We start with Wikipedia's <a href="https://en.wikipedia.org/wiki/List_of_economists" target="_blank">List of Economists</a>,
+            an alphabetically-organized index of notable figures. For each economist, we extract:
+        </p>
+        <ul>
+            <li><strong>Basic information:</strong> Name, birth/death dates, photo</li>
+            <li><strong>Intellectual influence:</strong> Who influenced their thinking</li>
+            <li><strong>Academic lineage:</strong> Doctoral advisors and students</li>
+            <li><strong>Unique identifier:</strong> Wikipedia page ID for reliable linking</li>
+        </ul>
+        <p>
+            The scraper is built with <code>Scrapy</code> and uses the <code>wikipedia</code> library to
+            reliably resolve page IDs, even when names are ambiguous or redirects exist.
+        </p>
+
+        <h3>Stage 2: Network Analysis</h3>
+        <p>
+            Once we have the raw data, we construct a directed graph where:
+        </p>
+        <ul>
+            <li><strong>Nodes</strong> represent individual economists</li>
+            <li><strong>Edges</strong> represent influence relationships (A influenced B)</li>
+        </ul>
+        <p>
+            We then apply the <strong>PageRank algorithm</strong> (the same algorithm Google uses to rank web pages)
+            to calculate a centrality score for each economist. Those with higher scores are more "influential"
+            in the sense that they are referenced by many others, who themselves are well-connected.
+        </p>
+
+        <h3>Stage 3: Interactive Visualization</h3>
+        <p>
+            Finally, we visualize the network as a force-directed graph using <strong>D3.js</strong>.
+            Key features include:
+        </p>
+        <ul>
+            <li><strong>Node size</strong> reflects PageRank score (bigger = more influential)</li>
+            <li><strong>Timeline axis</strong> positions nodes by birth year</li>
+            <li><strong>Interactive exploration</strong> with search, click for details, drag to reposition</li>
+            <li><strong>Real-time Wikipedia integration</strong> fetches biographies on demand</li>
+        </ul>
+
+        <h2>Technology Stack</h2>
+        <div class="tech-stack">
+            <span class="tech-badge">Python</span>
+            <span class="tech-badge">Scrapy</span>
+            <span class="tech-badge">NetworkX</span>
+            <span class="tech-badge">D3.js</span>
+            <span class="tech-badge">Wikipedia API</span>
+        </div>
+
+        <h2>Limitations</h2>
+        <p>
+            This project has some important limitations to keep in mind:
+        </p>
+        <ul>
+            <li>Data is limited to English Wikipedia and its editorial choices</li>
+            <li>Not all economists have complete infobox data (especially historical figures)</li>
+            <li>Influence relationships are often incomplete, subjective, or missing</li>
+            <li>The scraper uses heuristic parsing which may introduce errors</li>
+        </ul>
+        <p>
+            Despite these caveats, the dataset provides a fascinating lens into the development of
+            economic thought and the scholars who shaped it.
+        </p>
+
+        <h2>Source Code</h2>
+        <p>
+            This project is open source. The code includes detailed comments and documentation,
+            making it a useful learning resource for web scraping, network analysis, and data visualization.
+        </p>
+
+        <h2>Credits</h2>
+        <p>
+            Inspired by similar network visualization projects in philosophy and science.
+            Built with open-source tools and Wikipedia's incredible public knowledge base.
+        </p>
+
+        <div class="back-link">
+            <a href="index.html">← Back to visualization</a>
+        </div>
+    </div>
+</body>
+</html>

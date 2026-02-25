@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Econograph — History of Economic Thought</title>
+  <meta name="description" content="Explore 1,600+ economists across time, school of thought, and intellectual lineage.">
+  <link rel="stylesheet" href="css/main.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- ── SIDEBAR ─────────────────────────────────────────── -->
+    <aside id="sidebar">
+      <div class="brand">
+        <div class="brand-mark">E</div>
+        <div>
+          <div class="brand-name">Econograph</div>
+          <div class="brand-sub">History of Economic Thought</div>
+        </div>
+      </div>
+
+      <div class="sidebar-search">
+        <svg class="search-icon" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/>
+        </svg>
+        <input id="search" type="search" placeholder="Search economists…" autocomplete="off">
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">School of Thought</div>
+        <div id="school-filters" class="school-filter-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="sidebar-section">
+        <div class="sidebar-label">Era</div>
+        <div id="era-filters" class="era-filter-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+
+      <div class="sidebar-footer">
+        <span id="count-display">— economists</span>
+        <button id="reset-btn" class="reset-btn">Reset filters</button>
+      </div>
+    </aside>
+
+    <!-- ── MOBILE HEADER (hidden on desktop) ─────────────── -->
+    <header id="mobile-header">
+      <div class="mobile-brand">
+        <span class="brand-mark-sm">E</span>
+        <span class="mobile-title">Econograph</span>
+      </div>
+      <button id="mobile-filter-btn" class="mobile-filter-btn">
+        <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+          <path fill-rule="evenodd" d="M3 5a1 1 0 011-1h12a1 1 0 110 2H4a1 1 0 01-1-1zm3 5a1 1 0 011-1h6a1 1 0 110 2H7a1 1 0 01-1-1zm2 5a1 1 0 011-1h2a1 1 0 110 2h-2a1 1 0 01-1-1z" clip-rule="evenodd"/>
+        </svg>
+        Filters
+      </button>
+    </header>
+
+    <!-- ── MOBILE FILTER DRAWER ───────────────────────────── -->
+    <div id="mobile-filter-overlay" class="hidden"></div>
+    <div id="mobile-filter-drawer" class="hidden">
+      <div class="drawer-handle-bar"></div>
+      <div class="drawer-inner">
+        <div class="drawer-search">
+          <input id="mobile-search" type="search" placeholder="Search economists…" autocomplete="off">
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-label">School of Thought</div>
+          <div id="mobile-school-filters" class="school-filter-list dark"></div>
+        </div>
+        <div class="drawer-section">
+          <div class="drawer-label">Era</div>
+          <div id="mobile-era-filters" class="era-filter-list dark"></div>
+        </div>
+        <button id="mobile-reset-btn" class="reset-btn light">Reset</button>
+      </div>
+    </div>
+
+    <!-- ── TIMELINE ───────────────────────────────────────── -->
+    <main id="timeline-pane">
+      <div id="timeline-scroll">
+        <div id="timeline-list">
+          <!-- populated by JS -->
+        </div>
+      </div>
+    </main>
+
+    <!-- ── DETAIL PANEL ───────────────────────────────────── -->
+    <aside id="detail-panel" class="detail-hidden">
+
+      <!-- mobile drag handle -->
+      <div class="detail-drag-handle" id="detail-drag-handle">
+        <div class="handle-pill"></div>
+      </div>
+
+      <div id="detail-scroll">
+        <div class="detail-top-bar">
+          <button id="detail-close" aria-label="Close">
+            <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+              <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+            </svg>
+          </button>
+        </div>
+
+        <div class="detail-hero">
+          <div class="detail-photo-wrap">
+            <img id="detail-img" src="" alt="" onerror="this.style.display='none'">
+            <div id="detail-img-placeholder" class="detail-img-placeholder"></div>
+          </div>
+          <div class="detail-hero-info">
+            <h2 id="detail-name"></h2>
+            <div id="detail-dates" class="detail-dates"></div>
+            <span id="detail-school" class="school-pill"></span>
+            <a id="detail-link" href="#" target="_blank" rel="noopener" class="wiki-link">
+              View on Wikipedia ↗
+            </a>
+          </div>
+        </div>
+
+        <div class="detail-bio-section">
+          <p id="detail-bio" class="detail-bio"></p>
+        </div>
+
+        <div class="detail-network-section">
+          <div class="section-title">Connections</div>
+          <div id="mini-network"></div>
+        </div>
+
+        <div class="detail-connections-section" id="detail-connections-section">
+          <!-- populated by JS -->
+        </div>
+
+      </div>
+    </aside>
+
+  </div><!-- /#app -->
+
+  <script src="js/graph_v3.js"></script>
+  <script src="https://d3js.org/d3.v4.min.js"></script>
+  <script src="js/app.js"></script>
+
+  <!-- ── FAB ONBOARDING TOOLTIP ─────────────────────────────── -->
+  <div id="fab-tooltip" role="tooltip" aria-hidden="true">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14" style="flex-shrink:0">
+      <circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/>
+    </svg>
+    Search economists &amp; topics
+  </div>
+
+  <!-- ── RESEARCH ASSISTANT FAB ──────────────────────────────── -->
+  <button id="research-fab" aria-label="Open Research Assistant">
+    <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" width="22" height="22">
+      <circle cx="8.5" cy="8.5" r="5.5"/>
+      <path d="M15 15l-3-3"/>
+      <path d="M8.5 6v5M6 8.5h5" stroke-width="1.8"/>
+    </svg>
+  </button>
+
+  <!-- ── RESEARCH ASSISTANT PANEL ────────────────────────────── -->
+  <div id="research-panel" class="research-panel--hidden" role="dialog" aria-label="Research Assistant">
+    <div id="research-overlay" class="research-overlay--hidden"></div>
+    <div class="research-panel-inner">
+      <header class="research-header">
+        <div class="research-header-left">
+          <span class="research-header-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+              <circle cx="8.5" cy="8.5" r="5.5"/><path d="M15 15l-3-3"/>
+            </svg>
+          </span>
+          <span>Research Assistant</span>
+        </div>
+        <button id="research-close" aria-label="Close Research Assistant">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="18" height="18">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </header>
+
+      <div class="research-input-wrap">
+        <input id="research-input" type="text" placeholder="e.g. corporate governance, Keynesian…" autocomplete="off" />
+        <button id="research-submit" aria-label="Search">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="16" height="16">
+            <path fill-rule="evenodd" d="M10.293 3.293a1 1 0 011.414 0l6 6a1 1 0 010 1.414l-6 6a1 1 0 01-1.414-1.414L14.586 11H3a1 1 0 110-2h11.586l-4.293-4.293a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+
+      <div class="research-chips" aria-label="Suggested searches">
+        <button class="research-chip" data-query="corporate governance">corporate governance</button>
+        <button class="research-chip" data-query="Keynesian economics">Keynesian economics</button>
+        <button class="research-chip" data-query="behavioral economics">behavioral economics</button>
+        <button class="research-chip" data-query="free trade theory">free trade theory</button>
+        <button class="research-chip" data-query="monetary policy">monetary policy</button>
+        <button class="research-chip" data-query="game theory">game theory</button>
+      </div>
+
+      <div id="research-results" class="research-results">
+        <div class="research-empty-state">
+          <svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="1.5" width="40" height="40" opacity="0.3">
+            <circle cx="21" cy="21" r="13"/><path d="M34 34l8 8"/>
+            <path d="M21 15v12M15 21h12" stroke-width="2"/>
+          </svg>
+          <p>Ask about any topic in economics — schools of thought, key figures, or historical debates.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="https://cdn.jsdelivr.net/npm/minisearch@7/dist/umd/index.min.js"></script>
+  <script src="js/research.js"></script>
+</body>
+</html>
