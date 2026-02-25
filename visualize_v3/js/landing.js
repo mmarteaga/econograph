@@ -145,14 +145,6 @@
     var overlay = document.getElementById('landing-overlay');
     if (!overlay) return;
 
-    var isFirstVisit = !localStorage.getItem('econograph-intro-seen');
-
-    // Returning visitors: skip quickly without animation to avoid being annoying
-    if (!isFirstVisit) {
-      overlay.style.display = 'none';
-      return;
-    }
-
     var netContainer = overlay.querySelector('.landing-network');
     var animResult = null;
 
@@ -175,6 +167,9 @@
         actionsEl.classList.add('landing-actions--visible');
       }, 2400);
     }
+
+    // Reset the "seen" flag so the landing always shows on next visit too
+    localStorage.removeItem('econograph-intro-seen');
 
     function dismiss() {
       if (animResult) animResult.sim.stop();
