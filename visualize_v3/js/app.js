@@ -40,7 +40,32 @@
     'Other':                      '#6b7280',
   };
 
-  /* ── 2. DATA PREP ──────────────────────────────────────────────── */
+  /* ── 2. SCHOOL DESCRIPTIONS ────────────────────────────────────── */
+
+  const SCHOOL_DESC = {
+    'Keynesian':                  'Government spending can stabilize a weak economy. Markets don\'t always self-correct on their own.',
+    'New Keynesian':              'Keynesian ideas modernized with microeconomic foundations. Prices and wages adjust slowly in the short run.',
+    'Austrian School':            'Markets aggregate dispersed knowledge that no central planner can replicate. Spontaneous order beats design.',
+    'Chicago School':             'Free markets work. Price theory and empirical rigor, deeply skeptical of government intervention.',
+    'Classical/Neoclassical':     'Supply, demand, and marginal analysis explain prices. Rational individuals maximize utility in competitive markets.',
+    'Marxian':                    'Capitalism generates class conflict and exploitation. Historical materialism explains economic change and crises.',
+    'Behavioral':                 'People deviate predictably from rationality. Psychology and experiments reveal how choices actually work.',
+    'Game Theory':                'Strategic interactions between rational agents, formalized mathematically. Nash equilibria predict outcomes.',
+    'Institutional':              'Economies are shaped by laws, norms, and organizations — not just market prices.',
+    'Econometrics':               'Statistical and causal methods applied to economic data to test theories and measure real-world effects.',
+    'Development':                'Growth, poverty reduction, and structural transformation in developing and emerging economies.',
+    'Finance':                    'Asset pricing, capital markets, risk management, and how firms make financial decisions.',
+    'International Trade':        'How countries gain from specialization, trade, and cross-border investment. Who wins, who loses.',
+    'Labor Economics':            'Wages, employment, and human capital. How labor markets work — and where they fail workers.',
+    'Public Choice':              'Politicians and bureaucrats pursue self-interest. Voting and lobbying shape policy as much as expertise.',
+    'Welfare & Public Economics': 'How governments can correct market failures through taxes, transfers, regulation, and public goods.',
+    'Economic History':           'Using historical data and evidence to understand long-run economic change, institutions, and development.',
+    'Environmental Economics':    'Pollution and resource use as externalities. How prices, taxes, and caps can align incentives with sustainability.',
+    'Political Economy':          'How political institutions, ideology, and power shape economic outcomes and policy choices.',
+    'Other':                      'Interdisciplinary or field-specific work that doesn\'t fit neatly into a major school of thought.',
+  };
+
+  /* ── 3. DATA PREP ──────────────────────────────────────────────── */
 
   const nodes = graph.nodes;   // loaded by graph_v3.js
   const links = graph.links;
@@ -105,11 +130,14 @@
       const item = document.createElement('div');
       item.className = 'school-filter-item';
       item.dataset.school = s;
+      if (SCHOOL_DESC[s]) item.dataset.tip = SCHOOL_DESC[s];
       item.innerHTML =
         `<span class="school-dot" style="background:${color}"></span>` +
         `<span>${s}</span>` +
         `<span class="school-count">${schoolCounts[s]}</span>`;
       item.addEventListener('click', () => toggleSchool(s));
+      item.addEventListener('mouseenter', () => showSchoolTip(item, SCHOOL_DESC[s]));
+      item.addEventListener('mouseleave', hideSchoolTip);
       container.appendChild(item);
     });
   }
@@ -243,6 +271,9 @@
   function openDetail(n) {
     selectedNode = n;
 
+    // Update URL for shareability
+    history.pushState({ econId: n.id }, '', '?id=' + n.id);
+
     // Highlight selected row
     document.querySelectorAll('.economist-row').forEach(r => {
       r.classList.toggle('selected', r.dataset.id === n.id);
@@ -275,6 +306,9 @@
     schoolEl.style.background    = color + '18';
     schoolEl.style.color         = color;
     schoolEl.style.borderColor   = color + '30';
+    schoolEl.title               = SCHOOL_DESC[n.school] || '';
+    schoolEl.addEventListener('mouseenter', () => showSchoolTip(schoolEl, SCHOOL_DESC[n.school]));
+    schoolEl.addEventListener('mouseleave', hideSchoolTip);
 
     const linkEl = document.getElementById('detail-link');
     if (n.url) {
@@ -315,6 +349,7 @@
     detailPanel.classList.add('detail-hidden');
     document.querySelectorAll('.economist-row.selected').forEach(r => r.classList.remove('selected'));
     selectedNode = null;
+    history.pushState({}, '', location.pathname);
   }
 
   /* ── 10. WIKIPEDIA BIO ─────────────────────────────────────────── */
@@ -355,36 +390,62 @@
       });
   }
 
-  /* ── 11. CONNECTIONS LIST ──────────────────────────────────────── */
+  /* ── 11. CONNECTIONS LIST (typed) ─────────────────────────────── */
 
   function renderConnections(n) {
     const container = document.getElementById('detail-connections-section');
-    const neighborIds = Array.from(adj[n.id] || []);
-    if (!neighborIds.length) { container.innerHTML = ''; return; }
+    container.innerHTML = '';
 
-    const neighbors = neighborIds
-      .map(id => nodeById[id])
-      .filter(Boolean)
-      .sort((a, b) => (b.score || 0) - (a.score || 0));
+    const allNeighborIds = new Set(adj[n.id] || []);
+    if (!allNeighborIds.size) return;
 
-    const titleDiv = document.createElement('div');
-    titleDiv.className   = 'section-title';
-    titleDiv.textContent = 'Connections (' + neighbors.length + ')';
-    container.innerHTML  = '';
-    container.appendChild(titleDiv);
+    // Typed buckets from annotated data
+    const advisorIds     = new Set((n.advisorIds     || []).filter(id => allNeighborIds.has(id)));
+    const studentIds     = new Set((n.studentIds     || []).filter(id => allNeighborIds.has(id)));
+    const influencedByIds= new Set((n.influencedByIds|| []).filter(id => allNeighborIds.has(id)));
 
-    neighbors.forEach(nb => {
+    // Anything not in a named category
+    const otherIds = new Set(
+      Array.from(allNeighborIds).filter(id =>
+        !advisorIds.has(id) && !studentIds.has(id) && !influencedByIds.has(id)
+      )
+    );
+
+    function makeConnItem(nb) {
       const c    = SCHOOL_COLORS[nb.school] || '#6b7280';
       const item = document.createElement('div');
-      item.className = 'connection-item';
+      item.className  = 'connection-item';
       item.dataset.id = nb.id;
       item.innerHTML  =
         `<span class="conn-dot" style="background:${c}"></span>` +
         `<span class="conn-name">${escapeHtml(nb.name)}</span>` +
         (nb.birthYear ? `<span class="conn-year">b. ${nb.birthYear}</span>` : '');
       item.addEventListener('click', () => openDetail(nb));
-      container.appendChild(item);
-    });
+      return item;
+    }
+
+    function renderSection(label, ids) {
+      if (!ids.size) return;
+      const sorted = Array.from(ids)
+        .map(id => nodeById[id]).filter(Boolean)
+        .sort((a, b) => (b.score || 0) - (a.score || 0));
+      const head = document.createElement('div');
+      head.className   = 'conn-section-head';
+      head.textContent = label + ' (' + sorted.length + ')';
+      container.appendChild(head);
+      sorted.forEach(nb => container.appendChild(makeConnItem(nb)));
+    }
+
+    const total = allNeighborIds.size;
+    const titleDiv = document.createElement('div');
+    titleDiv.className   = 'section-title';
+    titleDiv.textContent = 'Connections (' + total + ')';
+    container.appendChild(titleDiv);
+
+    renderSection('Doctoral Advisors', advisorIds);
+    renderSection('Doctoral Students', studentIds);
+    renderSection('Influences', influencedByIds);
+    renderSection('Also Connected', otherIds);
   }
 
   /* ── 12. MINI EGO-NETWORK (D3 v4) ─────────────────────────────── */
@@ -538,7 +599,51 @@
     }
   });
 
-  /* ── 17. UTILITY ───────────────────────────────────────────────── */
+  /* ── 17. SCHOOL TOOLTIP ────────────────────────────────────────── */
+
+  const tipEl = document.getElementById('school-tip');
+
+  function showSchoolTip(referenceEl, text) {
+    if (!tipEl || !text) return;
+    tipEl.textContent = text;
+    tipEl.style.display = 'block';
+    tipEl.getBoundingClientRect(); // force reflow for transition
+    const rect    = referenceEl.getBoundingClientRect();
+    const tipW    = 220;
+    let   left    = rect.right + 10;
+    let   top     = rect.top + rect.height / 2 - 30;
+    if (left + tipW > window.innerWidth - 8) {
+      left = rect.left - tipW - 10;
+    }
+    if (top < 8) top = 8;
+    if (top + 80 > window.innerHeight) top = window.innerHeight - 80;
+    tipEl.style.left = left + 'px';
+    tipEl.style.top  = top  + 'px';
+    tipEl.classList.add('school-tip--visible');
+  }
+
+  function hideSchoolTip() {
+    if (tipEl) tipEl.classList.remove('school-tip--visible');
+  }
+
+  /* ── 18. SURPRISE ME ────────────────────────────────────────────── */
+
+  function surpriseMe() {
+    closeDrawer();
+    const pool = nodes
+      .slice()
+      .sort((a, b) => (b.score || 0) - (a.score || 0))
+      .slice(0, 250);
+    const pick = pool[Math.floor(Math.random() * pool.length)];
+    openDetail(pick);
+    // Scroll the row into view in the timeline
+    setTimeout(() => {
+      const row = document.querySelector('.economist-row[data-id="' + pick.id + '"]');
+      if (row) row.scrollIntoView({ block: 'center', behavior: 'smooth' });
+    }, 100);
+  }
+
+  /* ── 19. UTILITY ───────────────────────────────────────────────── */
 
   function clamp(v, lo, hi) { return Math.max(lo, Math.min(hi, v)); }
 
@@ -554,7 +659,7 @@
     return String(str).replace(/"/g, '&quot;');
   }
 
-  /* ── 18. INIT ──────────────────────────────────────────────────── */
+  /* ── 20. INIT ──────────────────────────────────────────────────── */
 
   buildSchoolFilters(schoolFiltersEl);
   buildSchoolFilters(mobileSchoolFilters);
@@ -562,7 +667,71 @@
   buildEraFilters(mobileEraFilters);
   renderTimeline();
 
+  // Surprise me button
+  const surpriseBtnEl = document.getElementById('surprise-btn');
+  if (surpriseBtnEl) surpriseBtnEl.addEventListener('click', surpriseMe);
+
+  // Copy-link button
+  const copyLinkBtn = document.getElementById('detail-copy-link');
+  if (copyLinkBtn) {
+    copyLinkBtn.addEventListener('click', () => {
+      const url = window.location.href;
+      navigator.clipboard.writeText(url).then(() => {
+        copyLinkBtn.classList.add('copied');
+        document.getElementById('copy-link-label').textContent = 'Copied!';
+        setTimeout(() => {
+          copyLinkBtn.classList.remove('copied');
+          document.getElementById('copy-link-label').textContent = 'Copy link';
+        }, 2200);
+      }).catch(() => {
+        // Fallback for browsers without clipboard API
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        document.getElementById('copy-link-label').textContent = 'Copied!';
+        setTimeout(() => {
+          document.getElementById('copy-link-label').textContent = 'Copy link';
+        }, 2200);
+      });
+    });
+  }
+
+  // Deep-link: open detail panel if ?id= is in the URL on page load
+  (function checkDeepLink() {
+    const params = new URLSearchParams(window.location.search);
+    const id = params.get('id');
+    if (id && nodeById[id]) {
+      // Small delay so timeline has rendered
+      setTimeout(() => openDetail(nodeById[id]), 80);
+    }
+  })();
+
+  // Intro modal — show on first visit, hide forever after
+  (function initIntroModal() {
+    const overlay  = document.getElementById('intro-overlay');
+    const startBtn = document.getElementById('intro-start-btn');
+    if (!overlay) return;
+    if (localStorage.getItem('econograph-intro-seen')) {
+      overlay.style.display = 'none';
+      return;
+    }
+    function dismissIntro() {
+      overlay.classList.add('intro-hiding');
+      setTimeout(() => { overlay.style.display = 'none'; }, 320);
+      localStorage.setItem('econograph-intro-seen', '1');
+    }
+    if (startBtn) startBtn.addEventListener('click', dismissIntro);
+    overlay.addEventListener('click', (e) => {
+      if (e.target === overlay) dismissIntro();
+    });
+  })();
+
   // Expose internals for research.js
-  window.econograph = { openDetail, nodeById, adj };
+  window.econograph = { openDetail, closeDetail, nodeById, adj };
 
 })();
