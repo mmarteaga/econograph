@@ -88,7 +88,7 @@
     if (adj[t]) adj[t].add(s);
   });
 
-  /* ── 3. STATE ──────────────────────────────────────────────────── */
+  /* ── 4. STATE ──────────────────────────────────────────────────── */
 
   let activeSchools = new Set();
   let activeEras    = new Set();
@@ -601,9 +601,8 @@
 
   /* ── 17. SCHOOL TOOLTIP ────────────────────────────────────────── */
 
-  const tipEl = document.getElementById('school-tip');
-
   function showSchoolTip(referenceEl, text) {
+    const tipEl = document.getElementById('school-tip');
     if (!tipEl || !text) return;
     tipEl.textContent = text;
     tipEl.style.display = 'block';
@@ -623,6 +622,7 @@
   }
 
   function hideSchoolTip() {
+    const tipEl = document.getElementById('school-tip');
     if (tipEl) tipEl.classList.remove('school-tip--visible');
   }
 
@@ -709,26 +709,6 @@
       // Small delay so timeline has rendered
       setTimeout(() => openDetail(nodeById[id]), 80);
     }
-  })();
-
-  // Intro modal — show on first visit, hide forever after
-  (function initIntroModal() {
-    const overlay  = document.getElementById('intro-overlay');
-    const startBtn = document.getElementById('intro-start-btn');
-    if (!overlay) return;
-    if (localStorage.getItem('econograph-intro-seen')) {
-      overlay.style.display = 'none';
-      return;
-    }
-    function dismissIntro() {
-      overlay.classList.add('intro-hiding');
-      setTimeout(() => { overlay.style.display = 'none'; }, 320);
-      localStorage.setItem('econograph-intro-seen', '1');
-    }
-    if (startBtn) startBtn.addEventListener('click', dismissIntro);
-    overlay.addEventListener('click', (e) => {
-      if (e.target === overlay) dismissIntro();
-    });
   })();
 
   // Expose internals for research.js

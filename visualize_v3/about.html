@@ -1,167 +1,636 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>About - Econograph</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
-    <style>
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: #f5f5f5;
-            padding: 20px;
-        }
-        .container {
-            max-width: 800px;
-            margin: 40px auto;
-            background: white;
-            padding: 40px;
-            border-radius: 8px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        h1 {
-            margin-bottom: 10px;
-        }
-        .subtitle {
-            color: #666;
-            margin-bottom: 30px;
-        }
-        h2 {
-            margin-top: 30px;
-            margin-bottom: 15px;
-            font-size: 24px;
-        }
-        p {
-            line-height: 1.8;
-            color: #333;
-            margin-bottom: 15px;
-        }
-        ul {
-            margin-left: 20px;
-            line-height: 1.8;
-        }
-        code {
-            background: #f4f4f4;
-            padding: 2px 6px;
-            border-radius: 3px;
-            font-size: 0.9em;
-        }
-        .tech-stack {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 10px;
-            margin: 20px 0;
-        }
-        .tech-badge {
-            background: #1f77b4;
-            color: white;
-            padding: 5px 15px;
-            border-radius: 20px;
-            font-size: 14px;
-        }
-        .back-link {
-            margin-top: 30px;
-            padding-top: 20px;
-            border-top: 1px solid #eee;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About & Methodology — Econograph</title>
+  <meta name="description" content="How Econograph works: data collection, LLM-based school classification, PageRank scoring, and semantic search.">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #f8fafc;
+      --surface:   #ffffff;
+      --border:    #e2e8f0;
+      --text:      #0f172a;
+      --muted:     #64748b;
+      --accent:    #0f172a;
+      --link:      #2563eb;
+    }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.7;
+    }
+
+    /* ── NAV ── */
+    .nav {
+      background: #0f172a;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      height: 56px;
+      gap: 20px;
+      position: sticky;
+      top: 0;
+      z-index: 10;
+    }
+
+    .nav-brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      color: #f8fafc;
+    }
+
+    .nav-mark {
+      width: 32px;
+      height: 32px;
+      background: #fff;
+      color: #0f172a;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      font-weight: 800;
+      font-size: 16px;
+      letter-spacing: -0.5px;
+      flex-shrink: 0;
+    }
+
+    .nav-title {
+      font-size: 16px;
+      font-weight: 700;
+      letter-spacing: -0.3px;
+    }
+
+    .nav-sep { flex: 1; }
+
+    .nav a {
+      color: rgba(248,250,252,0.65);
+      text-decoration: none;
+      font-size: 14px;
+      transition: color 0.15s;
+    }
+
+    .nav a:hover { color: #f8fafc; }
+
+    /* ── HERO ── */
+    .hero {
+      background: #0f172a;
+      color: #f8fafc;
+      padding: 64px 24px 56px;
+      text-align: center;
+    }
+
+    .hero-tag {
+      display: inline-block;
+      background: rgba(255,255,255,0.1);
+      color: rgba(255,255,255,0.7);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 4px 12px;
+      border-radius: 99px;
+      margin-bottom: 16px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 44px);
+      font-weight: 800;
+      letter-spacing: -1px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+
+    .hero p {
+      font-size: 17px;
+      color: rgba(248,250,252,0.7);
+      max-width: 560px;
+      margin: 0 auto;
+      line-height: 1.7;
+    }
+
+    /* ── LAYOUT ── */
+    .page {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 48px 24px 80px;
+    }
+
+    /* ── STATS BAR ── */
+    .stats-bar {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      border-radius: 14px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      margin-bottom: 52px;
+    }
+
+    .stat-item {
+      background: var(--surface);
+      padding: 20px 16px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-size: 28px;
+      font-weight: 800;
+      letter-spacing: -0.5px;
+      color: var(--text);
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+
+    .stat-label {
+      font-size: 12px;
+      color: var(--muted);
+      font-weight: 500;
+    }
+
+    /* ── SECTIONS ── */
+    .section {
+      margin-bottom: 52px;
+    }
+
+    .step-badge {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 28px;
+      height: 28px;
+      background: var(--text);
+      color: #fff;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 700;
+      flex-shrink: 0;
+      margin-right: 10px;
+      vertical-align: middle;
+    }
+
+    h2 {
+      font-size: 22px;
+      font-weight: 800;
+      letter-spacing: -0.3px;
+      margin-bottom: 14px;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 16px;
+      font-weight: 700;
+      margin: 24px 0 8px;
+      color: var(--text);
+    }
+
+    p {
+      color: #334155;
+      margin-bottom: 14px;
+      font-size: 15.5px;
+    }
+
+    ul, ol {
+      padding-left: 22px;
+      margin-bottom: 14px;
+    }
+
+    li {
+      color: #334155;
+      font-size: 15.5px;
+      margin-bottom: 6px;
+    }
+
+    code {
+      background: #f1f5f9;
+      border: 1px solid var(--border);
+      padding: 1px 6px;
+      border-radius: 5px;
+      font-size: 13px;
+      font-family: 'SF Mono', 'Fira Code', monospace;
+    }
+
+    .callout {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-left: 4px solid #0284c7;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 18px 0;
+    }
+
+    .callout p { margin: 0; color: #0c4a6e; font-size: 14.5px; }
+
+    .warning {
+      background: #fefce8;
+      border: 1px solid #fde047;
+      border-left: 4px solid #ca8a04;
+      border-radius: 0 10px 10px 0;
+      padding: 14px 18px;
+      margin: 18px 0;
+    }
+
+    .warning p { margin: 0; color: #713f12; font-size: 14.5px; }
+
+    /* ── PIPELINE DIAGRAM ── */
+    .pipeline {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      margin: 20px 0 28px;
+    }
+
+    .pipe-step {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 16px 18px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      position: relative;
+    }
+
+    .pipe-step::after {
+      content: '↓';
+      position: absolute;
+      bottom: -16px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 14px;
+      color: var(--muted);
+      background: var(--bg);
+      padding: 0 4px;
+      z-index: 1;
+    }
+
+    .pipe-step:last-child::after { display: none; }
+
+    .pipe-icon {
+      width: 36px;
+      height: 36px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      flex-shrink: 0;
+      font-size: 16px;
+    }
+
+    .pipe-body { flex: 1; }
+
+    .pipe-title {
+      font-size: 14px;
+      font-weight: 700;
+      color: var(--text);
+      margin-bottom: 2px;
+    }
+
+    .pipe-desc {
+      font-size: 13px;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* ── TECH STACK ── */
+    .tech-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 16px 0;
+    }
+
+    .tech-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 13px;
+      font-weight: 500;
+      color: var(--text);
+    }
+
+    /* ── DIVIDER ── */
+    .divider {
+      height: 1px;
+      background: var(--border);
+      margin: 48px 0;
+    }
+
+    /* ── BACK LINK ── */
+    .back-strip {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-top: 1px solid var(--border);
+      margin-top: 48px;
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: var(--text);
+      color: #fff;
+      text-decoration: none;
+      padding: 10px 18px;
+      border-radius: 10px;
+      font-size: 14px;
+      font-weight: 600;
+      transition: opacity 0.15s;
+    }
+
+    .back-btn:hover { opacity: 0.85; }
+
+    a { color: var(--link); }
+
+    @media (max-width: 600px) {
+      .stats-bar { grid-template-columns: repeat(2, 1fr); }
+      .hero { padding: 44px 20px 40px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <h1>About Econograph</h1>
-        <p class="subtitle">Mapping the intellectual network of economists</p>
 
-        <h2>What is this?</h2>
-        <p>
-            Econograph is an interactive visualization of the network of economists and their intellectual influences.
-            By scraping data from Wikipedia and applying network analysis algorithms, we can see how economic ideas
-            have flowed through history and identify the most influential thinkers in the field.
-        </p>
+  <nav class="nav">
+    <a href="index.html" class="nav-brand">
+      <div class="nav-mark">E</div>
+      <span class="nav-title">Econograph</span>
+    </a>
+    <span class="nav-sep"></span>
+    <a href="index.html">← Back to explorer</a>
+  </nav>
 
-        <h2>How it works</h2>
-        <p>The project consists of three stages:</p>
+  <div class="hero">
+    <span class="hero-tag">About & Methodology</span>
+    <h1>How Econograph works</h1>
+    <p>A network of 1,637 economists built from Wikidata, classified by an LLM, ranked by PageRank, and made searchable with full-text indexing.</p>
+  </div>
 
-        <h3>Stage 1: Data Collection</h3>
-        <p>
-            We start with Wikipedia's <a href="https://en.wikipedia.org/wiki/List_of_economists" target="_blank">List of Economists</a>,
-            an alphabetically-organized index of notable figures. For each economist, we extract:
-        </p>
-        <ul>
-            <li><strong>Basic information:</strong> Name, birth/death dates, photo</li>
-            <li><strong>Intellectual influence:</strong> Who influenced their thinking</li>
-            <li><strong>Academic lineage:</strong> Doctoral advisors and students</li>
-            <li><strong>Unique identifier:</strong> Wikipedia page ID for reliable linking</li>
-        </ul>
-        <p>
-            The scraper is built with <code>Scrapy</code> and uses the <code>wikipedia</code> library to
-            reliably resolve page IDs, even when names are ambiguous or redirects exist.
-        </p>
+  <div class="page">
 
-        <h3>Stage 2: Network Analysis</h3>
-        <p>
-            Once we have the raw data, we construct a directed graph where:
-        </p>
-        <ul>
-            <li><strong>Nodes</strong> represent individual economists</li>
-            <li><strong>Edges</strong> represent influence relationships (A influenced B)</li>
-        </ul>
-        <p>
-            We then apply the <strong>PageRank algorithm</strong> (the same algorithm Google uses to rank web pages)
-            to calculate a centrality score for each economist. Those with higher scores are more "influential"
-            in the sense that they are referenced by many others, who themselves are well-connected.
-        </p>
-
-        <h3>Stage 3: Interactive Visualization</h3>
-        <p>
-            Finally, we visualize the network as a force-directed graph using <strong>D3.js</strong>.
-            Key features include:
-        </p>
-        <ul>
-            <li><strong>Node size</strong> reflects PageRank score (bigger = more influential)</li>
-            <li><strong>Timeline axis</strong> positions nodes by birth year</li>
-            <li><strong>Interactive exploration</strong> with search, click for details, drag to reposition</li>
-            <li><strong>Real-time Wikipedia integration</strong> fetches biographies on demand</li>
-        </ul>
-
-        <h2>Technology Stack</h2>
-        <div class="tech-stack">
-            <span class="tech-badge">Python</span>
-            <span class="tech-badge">Scrapy</span>
-            <span class="tech-badge">NetworkX</span>
-            <span class="tech-badge">D3.js</span>
-            <span class="tech-badge">Wikipedia API</span>
-        </div>
-
-        <h2>Limitations</h2>
-        <p>
-            This project has some important limitations to keep in mind:
-        </p>
-        <ul>
-            <li>Data is limited to English Wikipedia and its editorial choices</li>
-            <li>Not all economists have complete infobox data (especially historical figures)</li>
-            <li>Influence relationships are often incomplete, subjective, or missing</li>
-            <li>The scraper uses heuristic parsing which may introduce errors</li>
-        </ul>
-        <p>
-            Despite these caveats, the dataset provides a fascinating lens into the development of
-            economic thought and the scholars who shaped it.
-        </p>
-
-        <h2>Source Code</h2>
-        <p>
-            This project is open source. The code includes detailed comments and documentation,
-            making it a useful learning resource for web scraping, network analysis, and data visualization.
-        </p>
-
-        <h2>Credits</h2>
-        <p>
-            Inspired by similar network visualization projects in philosophy and science.
-            Built with open-source tools and Wikipedia's incredible public knowledge base.
-        </p>
-
-        <div class="back-link">
-            <a href="index.html">← Back to visualization</a>
-        </div>
+    <!-- Stats -->
+    <div class="stats-bar">
+      <div class="stat-item">
+        <div class="stat-num">1,637</div>
+        <div class="stat-label">Economists</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">1,800</div>
+        <div class="stat-label">Connections</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">3,365</div>
+        <div class="stat-label">Typed relationships</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">20</div>
+        <div class="stat-label">Schools of thought</div>
+      </div>
+      <div class="stat-item">
+        <div class="stat-num">400+</div>
+        <div class="stat-label">Years covered</div>
+      </div>
     </div>
+
+    <!-- What is this -->
+    <div class="section">
+      <h2>What is Econograph?</h2>
+      <p>
+        Econograph is an interactive map of economists and their intellectual connections — who advised whom, who influenced whom, and how schools of thought cluster across time. It covers thinkers from the 1600s through the present day, letting you explore how economic ideas evolved and spread.
+      </p>
+      <p>
+        The goal is to make the history of economic thought legible to anyone curious about it, not just to specialists. Every connection in the graph is grounded in Wikidata's structured records; every school classification is based on what an economist's Wikipedia page actually says about their work.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Pipeline -->
+    <div class="section">
+      <h2>The data pipeline</h2>
+      <p>Five stages turn raw Wikipedia/Wikidata records into the interactive graph you see.</p>
+
+      <div class="pipeline">
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 5h14M3 10h14M3 15h8"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">1 · Wikidata scraping</div>
+            <div class="pipe-desc">All economists with a Wikipedia page, their photos, birth years, PhD advisor/student relationships, and influence links.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="10" cy="10" r="7"/><path d="M10 7v6M7 10h6"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">2 · Wikipedia text extraction</div>
+            <div class="pipe-desc">The introductory section of each economist's Wikipedia article is fetched — the richest available prose description of their work.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M4 4h12v4H4zM4 12h12v4H4z"/><path d="M8 8v4"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">3 · LLM school classification</div>
+            <div class="pipe-desc">Claude Haiku reads each Wikipedia intro and assigns the economist to one of 20 schools of thought, using 156 authoritative "seed" economists as anchors.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="6" cy="10" r="3"/><circle cx="14" cy="5" r="2"/><circle cx="14" cy="15" r="2"/><path d="M9 10h3M11.5 7l-1 2M11.5 13l-1-2"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">4 · Network analysis</div>
+            <div class="pipe-desc">A NetworkX graph is built from the 1,800 connection edges. PageRank scores each economist by their centrality — how many highly-connected peers reference them.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="7" cy="7" r="4"/><path d="M12 12l5 5"/><path d="M7 5v4M5 7h4" stroke-width="1.6"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">5 · Search indexing</div>
+            <div class="pipe-desc">MiniSearch (BM25) indexes every economist's name, school, and bio text. At search time, Wikipedia's API optionally enriches the query with broader context.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Stage 1: Wikidata -->
+    <div class="section">
+      <h2><span class="step-badge">1</span> Data collection — Wikidata</h2>
+      <p>
+        The dataset starts with <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a>, Wikipedia's structured knowledge base. Every economist with a Wikipedia article has a Wikidata entry that records structured facts: birth and death dates, a photo, doctoral advisor relationships, doctoral student relationships, and intellectual influences.
+      </p>
+      <p>
+        The scraper queries Wikidata's SPARQL endpoint and the MediaWiki API to collect this data for all economists. The result is 1,637 economists and 1,800 direct connections between them.
+      </p>
+      <div class="callout">
+        <p><strong>Why Wikidata instead of scraping Wikipedia infoboxes?</strong> Wikidata represents structured facts with explicit property types (P184 = doctoral advisor, P185 = doctoral student, P737 = influenced by). This makes it possible to distinguish connection <em>types</em> — knowing that Paul Samuelson was Robert Solow's doctoral advisor is much richer than just knowing they're "connected."</p>
+      </div>
+    </div>
+
+    <!-- Stage 2: Wikipedia text -->
+    <div class="section">
+      <h2><span class="step-badge">2</span> Wikipedia text extraction</h2>
+      <p>
+        For each economist with a Wikipedia page, the introductory section (the first few paragraphs before any section headers) is fetched using the <a href="https://en.wikipedia.org/api/rest_v1/" target="_blank" rel="noopener">Wikipedia REST API</a>. This gives a 200–450 character plain-text summary of who they are and what they worked on.
+      </p>
+      <p>
+        This text serves two purposes: it provides the raw material for LLM school classification (Stage 3), and it is embedded directly in the graph data so the Research Assistant can perform full-text search without additional API calls at browse time.
+      </p>
+      <div class="callout">
+        <p><strong>API limit note:</strong> The Wikipedia Action API silently caps <code>prop=extracts</code> responses at 20 articles per request, regardless of how many titles are sent. Batches are accordingly set to 20. This is not documented prominently in Wikipedia's API docs — it was discovered empirically.</p>
+      </div>
+    </div>
+
+    <!-- Stage 3: LLM classification -->
+    <div class="section">
+      <h2><span class="step-badge">3</span> School classification — LLM approach</h2>
+      <p>
+        Assigning an economist to a school of thought is genuinely hard. Two problems make traditional keyword matching unreliable:
+      </p>
+      <ul>
+        <li><strong>Polysemy:</strong> The word "development" means something entirely different in "development economics" (growth in low-income countries) vs. "financial development" (depth of capital markets). A keyword approach can't resolve this.</li>
+        <li><strong>Network contamination:</strong> Community detection (Louvain algorithm) groups economists by who they cite — but intellectual network proximity doesn't equal school membership. Raj Chetty co-publishes with behavioral economists but is primarily a labor economist; naive community detection dragged the entire Harvard labor cluster (Autor, Katz, Diamond) into the wrong school.</li>
+      </ul>
+      <p>
+        The solution is to read what each economist's Wikipedia page actually says and classify it directly. Each Wikipedia intro is sent to <strong>Claude Haiku</strong> (Anthropic's fast, efficient model) with a structured prompt that lists all 20 valid schools and includes explicit disambiguation rules.
+      </p>
+
+      <h3>Seed economists</h3>
+      <p>
+        156 economists are classified by hand as authoritative "seeds" and are never sent to the LLM. They serve as anchors: Keynes is Keynesian, Hayek is Austrian School, Samuelson is Classical/Neoclassical. The LLM classifies everyone else.
+      </p>
+
+      <h3>Disambiguation rules in the prompt</h3>
+      <p>The system prompt gives the LLM explicit disambiguation guidance, for example:</p>
+      <ul>
+        <li>"Development" = developing country economics. <em>Not</em> "development of capital markets."</li>
+        <li>An economist can publish game theory papers but belong to "Chicago School" if their primary identity is Chicago-trained price theory.</li>
+        <li>If Wikipedia calls someone an "institutional economist" explicitly, that takes priority over topics they happen to write about.</li>
+      </ul>
+
+      <div class="callout">
+        <p><strong>Coverage:</strong> 1,388 of 1,637 economists had Wikipedia intro text available. All 1,388 were classified. 863 got a different school assignment than the prior keyword-based approach. The remaining 249 economists either had no Wikipedia URL or insufficient text — they retain their seed assignment or prior classification.</p>
+      </div>
+
+      <h3>Result quality</h3>
+      <p>
+        The LLM approach substantially outperforms keyword matching on edge cases. Tobias Adrian (an expert on financial stability and capital market risk, wrongly labeled "Development" by keyword matching) is correctly classified as "Finance." The Harvard labor economics cluster (Katz, Autor, Liebman, etc.) is no longer contaminated by its Louvain community membership.
+      </p>
+    </div>
+
+    <!-- Stage 4: Network analysis -->
+    <div class="section">
+      <h2><span class="step-badge">4</span> Network analysis — PageRank</h2>
+      <p>
+        The 1,637 economists and 1,800 connections form an undirected graph. <a href="https://networkx.org" target="_blank" rel="noopener">NetworkX</a> is used to compute <strong>PageRank</strong> for each node — the same iterative algorithm Google uses to rank web pages.
+      </p>
+      <p>
+        PageRank works recursively: an economist gets a higher score if they are connected to many others, <em>and</em> those others are themselves well-connected. This gives a nuanced measure of intellectual centrality that reflects both breadth of influence and the prestige of one's peers.
+      </p>
+      <p>
+        PageRank scores are used throughout the interface: to rank search results, to determine which connections appear first in the detail panel, to size nodes in the mini network graph, and to weight the "Surprise me" random selection toward notable figures.
+      </p>
+
+      <h3>Typed connections (3,365 relationships)</h3>
+      <p>
+        Beyond the raw connection graph, Wikidata records the <em>type</em> of each relationship. These are resolved into three categories for each economist:
+      </p>
+      <ul>
+        <li><strong>Doctoral Advisors</strong> — who supervised their PhD</li>
+        <li><strong>Doctoral Students</strong> — who they supervised</li>
+        <li><strong>Influences</strong> — thinkers explicitly credited as intellectual precursors</li>
+      </ul>
+      <p>
+        A fourth category, <strong>Also Connected</strong>, covers all remaining edges in the graph that don't fall into the above three — typically colleagues, frequent co-authors, or figures who appeared in each other's infoboxes without a specific relationship type.
+      </p>
+    </div>
+
+    <!-- Stage 5: Search -->
+    <div class="section">
+      <h2><span class="step-badge">5</span> Search — MiniSearch + Wikipedia enrichment</h2>
+      <p>
+        The Research Assistant uses <a href="https://lucaong.github.io/minisearch/" target="_blank" rel="noopener">MiniSearch</a>, a lightweight BM25 full-text search library (6 KB). On page load, it builds an in-browser index over every economist's name, school, and Wikipedia bio text. No server required.
+      </p>
+      <p>
+        When you search "corporate governance," MiniSearch finds economists whose bios mention "principal-agent problem," "shareholder accountability," "fiduciary duty," and so on — because those are the actual terms in their Wikipedia articles, not hardcoded rules.
+      </p>
+
+      <h3>Wikipedia query enrichment</h3>
+      <p>
+        For broader conceptual queries, Econograph goes one step further: it fetches the Wikipedia article for your search query itself, extracts the first 600 characters of its intro, and runs a second MiniSearch pass using those expanded terms. A query for "history of corporate governance" pulls Wikipedia's intro for that topic, which mentions "agency theory," "hostile takeover," and "institutional investors" — terms that appear in relevant economists' bios and dramatically improve recall.
+      </p>
+      <p>
+        When this enrichment fires, a small <em>context expanded</em> badge appears on the results. The final score for each result is a weighted combination of MiniSearch relevance and PageRank score, so prominent economists surface above obscure ones with the same keyword match.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Limitations -->
+    <div class="section">
+      <h2>Limitations & caveats</h2>
+
+      <div class="warning">
+        <p><strong>English Wikipedia bias.</strong> The dataset is entirely sourced from English Wikipedia and Wikidata. Economists whose work is primarily documented in other languages are underrepresented or absent, particularly thinkers from Latin America, East Asia, and continental Europe outside major research universities.</p>
+      </div>
+
+      <ul>
+        <li><strong>Coverage is not exhaustive.</strong> 1,637 economists is a large sample but not a census. Notable figures may be missing if they lack a structured Wikidata entry or English Wikipedia article.</li>
+        <li><strong>School assignments are single-label.</strong> Many economists work across multiple schools. Gregory Mankiw writes New Keynesian DSGE models and also Chicago-adjacent policy work; he gets one label. The classification reflects the dominant characterization in Wikipedia, not a multi-dimensional one.</li>
+        <li><strong>Wikidata relationship data is incomplete.</strong> Many advisor/student/influence relationships exist in the real world but are not recorded in Wikidata. The typed connections section reflects what was formally recorded, not what actually happened.</li>
+        <li><strong>LLM classification can make errors.</strong> Roughly 18 economists received non-canonical labels ("Health Economics," "Agricultural Economics") that were not in the valid school list and were mapped to "Other." A few plausible-sounding but incorrect classifications likely remain undetected.</li>
+        <li><strong>Historical figures have sparse data.</strong> Economists born before ~1850 often have minimal Wikipedia coverage, which limits both bio quality and LLM classification confidence.</li>
+      </ul>
+    </div>
+
+    <!-- Tech stack -->
+    <div class="section">
+      <h2>Technology</h2>
+      <p>The full pipeline is open source.</p>
+      <div class="tech-grid">
+        <span class="tech-pill">Python 3</span>
+        <span class="tech-pill">Scrapy</span>
+        <span class="tech-pill">NetworkX</span>
+        <span class="tech-pill">Wikidata API</span>
+        <span class="tech-pill">Wikipedia REST API</span>
+        <span class="tech-pill">Claude Haiku (Anthropic)</span>
+        <span class="tech-pill">D3.js v4</span>
+        <span class="tech-pill">MiniSearch</span>
+        <span class="tech-pill">GitHub Pages</span>
+      </div>
+      <p style="margin-top:12px">
+        Source code: <a href="https://github.com/mmarteaga/econograph" target="_blank" rel="noopener">github.com/mmarteaga/econograph</a>
+      </p>
+    </div>
+
+    <div class="back-strip">
+      <a href="index.html" class="back-btn">
+        <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M10 3L5 8l5 5"/></svg>
+        Back to explorer
+      </a>
+      <span style="font-size:13px;color:#94a3b8">Econograph &mdash; History of Economic Thought</span>
+    </div>
+
+  </div>
 </body>
 </html>
