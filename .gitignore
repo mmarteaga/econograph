@@ -3,12 +3,15 @@
 *.bak2
 *.bak3
 *.bak_prebio
+*.bak_preconn
 
-# LLM tagger checkpoint (internal, large)
-visualize_v3/js/llm_tagger_checkpoint.json
+# Checkpoints (large, build-time only)
+**/summaries_checkpoint.json
+**/llm_tagger_checkpoint.json
 
 # Logs
 *.log
+scraper.log
 
 # Python
 __pycache__/
@@ -17,3 +20,15 @@ __pycache__/
 
 # OS
 .DS_Store
+
+# Session docs (not part of the project)
+BLOG_POST_GUIDE.md
+INDEX_V3.md
+MVP_STATUS.md
+PROJECT_SUMMARY_V3.md
+QUICKSTART_V3.md
+README_V3.md
+TESTING_CHECKLIST.md
+check_progress.sh
+economists_v3_demo.json
+economists_v3_full.json

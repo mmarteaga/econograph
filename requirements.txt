@@ -1,0 +1,18 @@
+# Econograph Project Dependencies
+# =================================
+
+# Stage 1: Web Scraping
+scrapy>=2.11.0          # Web scraping framework
+wikipedia>=1.4.0        # Wikipedia API wrapper for pageid resolution
+
+# Stage 2: Graph Building
+networkx>=3.0           # Graph construction and PageRank calculation
+numpy>=1.24.0           # Required by NetworkX for numerical operations
+
+# Data Processing (optional, for Jupyter notebooks)
+pandas>=2.0.0           # Data manipulation
+jupyter>=1.0.0          # Jupyter notebook support
+matplotlib>=3.7.0       # Data visualization in notebooks
+
+# Note: Stage 3 (Visualization) uses D3.js which runs in the browser
+# No Python dependencies needed for the visualization stage

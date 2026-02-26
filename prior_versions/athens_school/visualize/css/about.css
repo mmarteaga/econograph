@@ -1,0 +1,56 @@
+body {
+    font-family: "Helvetica", "Arial", sans-serif;
+    line-height: 1.5;
+    padding: 4em 1em;
+    background-image: url("../assets/schoolofathens.jpg");
+    background-position: center top;
+    background-repeat: no-repeat;
+    background-size: cover;
+    color: #555;
+}
+
+p {
+    margin: 1em 0;
+    padding: 0 6vw;
+}
+
+h1, h2, h3, ul {
+    padding: 0 6vw;
+}
+
+ul {
+    padding: 0 8vw;
+}
+
+main {
+    background-color: #fcfcfccc;
+    margin: 5em auto 0 auto;
+    max-width: 80vw;
+    padding: 2em 5vw;
+}
+  
+h2 {
+    margin-top: 1em;
+    padding-top: 1em;
+}
+
+h1,
+h2,
+strong {
+  color: #333;
+}
+
+a {
+    color: #039be5;
+    text-decoration: none;
+}
+
+h1 {
+    text-align: center;
+}
+
+#first_paragraph {
+    text-align: center;
+    color: #555;
+    font-size: 1.2em;
+}
