@@ -3,8 +3,8 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>About & Methodology — Econograph</title>
-  <meta name="description" content="How Econograph works: data collection, LLM-based school classification, PageRank scoring, and semantic search.">
+  <title>About and Methodology | Econograph</title>
+  <meta name="description" content="How Econograph works: data collection, LLM classification, PageRank scoring, AI summaries, and the intellectual debates view.">
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -109,7 +109,7 @@
     .hero p {
       font-size: 17px;
       color: rgba(248,250,252,0.7);
-      max-width: 560px;
+      max-width: 580px;
       margin: 0 auto;
       line-height: 1.7;
     }
@@ -238,6 +238,47 @@
 
     .warning p { margin: 0; color: #713f12; font-size: 14.5px; }
 
+    /* ── PULL QUOTE ── */
+    .pull-quote {
+      border-left: 4px solid #0f172a;
+      margin: 24px 0;
+      padding: 12px 0 12px 20px;
+    }
+    .pull-quote p {
+      font-size: 17px;
+      font-style: italic;
+      color: #1e293b;
+      margin: 0;
+      line-height: 1.65;
+    }
+
+    /* ── MATH BLOCK ── */
+    .math-block {
+      background: #f8fafc;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 18px 20px;
+      margin: 18px 0;
+      overflow-x: auto;
+    }
+    .math-formula {
+      font-family: 'SF Mono', 'Fira Code', 'Courier New', monospace;
+      font-size: 14px;
+      color: #1e293b;
+      line-height: 2;
+      white-space: pre;
+    }
+    .math-legend {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid var(--border);
+    }
+    .math-legend p {
+      font-size: 13px;
+      color: var(--muted);
+      margin-bottom: 4px;
+    }
+
     /* ── PIPELINE DIAGRAM ── */
     .pipeline {
       display: flex;
@@ -358,6 +399,7 @@
     @media (max-width: 600px) {
       .stats-bar { grid-template-columns: repeat(2, 1fr); }
       .hero { padding: 44px 20px 40px; }
+      .math-formula { font-size: 12px; }
     }
   </style>
 </head>
@@ -369,13 +411,13 @@
       <span class="nav-title">Econograph</span>
     </a>
     <span class="nav-sep"></span>
-    <a href="index.html">← Back to explorer</a>
+    <a href="index.html">&#8592; Back to explorer</a>
   </nav>
 
   <div class="hero">
-    <span class="hero-tag">About & Methodology</span>
+    <span class="hero-tag">About &amp; Methodology</span>
     <h1>How Econograph works</h1>
-    <p>A network of 1,637 economists built from Wikidata, classified by an LLM, ranked by PageRank, and made searchable with full-text indexing.</p>
+    <p>A network of 1,637 economists built from Wikidata and Wikipedia, enriched with AI-generated summaries, ranked by PageRank, and organized around the intellectual debates that have defined the discipline.</p>
   </div>
 
   <div class="page">
@@ -404,23 +446,33 @@
       </div>
     </div>
 
-    <!-- What is this -->
+    <!-- Why this project -->
     <div class="section">
-      <h2>What is Econograph?</h2>
+      <h2>Why this project</h2>
+
+      <div class="pull-quote">
+        <p>"Economists, like any other discipline, do not produce ideas in a vacuum. Their contributions build upon and influence one another, forming a complex and evolving web of intellectual history."</p>
+      </div>
+
       <p>
-        Econograph is an interactive map of economists and their intellectual connections — who advised whom, who influenced whom, and how schools of thought cluster across time. It covers thinkers from the 1600s through the present day, letting you explore how economic ideas evolved and spread.
+        The goal of Econograph is to uncover and visualize those interconnections: academic lineage, intellectual influence, and institutional affiliations, using structured data scraped from Wikipedia. Inspired by similar projects in the history of philosophy, this effort brings the tools of data scraping, network analysis, and machine learning to the history of economic thought. While some comparable projects exist, they tend toward either manual curation or simple lists. Here, the aim is to automate data collection at scale and create a reusable foundation for historical, institutional, or theoretical investigations into the economics profession.
       </p>
+
       <p>
-        The goal is to make the history of economic thought legible to anyone curious about it, not just to specialists. Every connection in the graph is grounded in Wikidata's structured records; every school classification is based on what an economist's Wikipedia page actually says about their work.
+        One of the most meaningful courses in my training as an economist was the history of economic thought. It is the kind of course that forces you to step back and ask a harder set of questions: how did we come to think the way we think? What problems were economists actually trying to solve when they built the models we now take for granted? What did they assume away, and why? The history of the discipline is, in this sense, a history of the questions economists decided were worth asking. Econograph is an attempt to make that history navigable.
+      </p>
+
+      <p>
+        The graph you see is the result of a five-stage automated pipeline. None of the school assignments, summaries, or network scores were entered by hand. The source code lives at <a href="https://github.com/mmarteaga/econograph" target="_blank" rel="noopener">github.com/mmarteaga/econograph</a>.
       </p>
     </div>
 
     <div class="divider"></div>
 
-    <!-- Pipeline -->
+    <!-- Pipeline overview -->
     <div class="section">
       <h2>The data pipeline</h2>
-      <p>Five stages turn raw Wikipedia/Wikidata records into the interactive graph you see.</p>
+      <p>Six stages turn raw Wikidata and Wikipedia records into the interactive graph.</p>
 
       <div class="pipeline">
         <div class="pipe-step">
@@ -428,8 +480,8 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M3 5h14M3 10h14M3 15h8"/></svg>
           </div>
           <div class="pipe-body">
-            <div class="pipe-title">1 · Wikidata scraping</div>
-            <div class="pipe-desc">All economists with a Wikipedia page, their photos, birth years, PhD advisor/student relationships, and influence links.</div>
+            <div class="pipe-title">1 &middot; Wikidata scraping</div>
+            <div class="pipe-desc">All economists with a Wikipedia page, their photos, birth years, doctoral advisor and student relationships, and influence links.</div>
           </div>
         </div>
         <div class="pipe-step">
@@ -437,8 +489,8 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="10" cy="10" r="7"/><path d="M10 7v6M7 10h6"/></svg>
           </div>
           <div class="pipe-body">
-            <div class="pipe-title">2 · Wikipedia text extraction</div>
-            <div class="pipe-desc">The introductory section of each economist's Wikipedia article is fetched — the richest available prose description of their work.</div>
+            <div class="pipe-title">2 &middot; Wikipedia text extraction</div>
+            <div class="pipe-desc">The introductory section of each economist's Wikipedia article is fetched via the Wikipedia Action API, providing a plain-text summary of their work.</div>
           </div>
         </div>
         <div class="pipe-step">
@@ -446,8 +498,8 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M4 4h12v4H4zM4 12h12v4H4z"/><path d="M8 8v4"/></svg>
           </div>
           <div class="pipe-body">
-            <div class="pipe-title">3 · LLM school classification</div>
-            <div class="pipe-desc">Claude Haiku reads each Wikipedia intro and assigns the economist to one of 20 schools of thought, using 156 authoritative "seed" economists as anchors.</div>
+            <div class="pipe-title">3 &middot; LLM school classification</div>
+            <div class="pipe-desc">Claude Haiku reads each Wikipedia intro and assigns the economist to one of 20 schools of thought, using 156 authoritative seed economists as anchors.</div>
           </div>
         </div>
         <div class="pipe-step">
@@ -455,8 +507,17 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="6" cy="10" r="3"/><circle cx="14" cy="5" r="2"/><circle cx="14" cy="15" r="2"/><path d="M9 10h3M11.5 7l-1 2M11.5 13l-1-2"/></svg>
           </div>
           <div class="pipe-body">
-            <div class="pipe-title">4 · Network analysis</div>
-            <div class="pipe-desc">A NetworkX graph is built from the 1,800 connection edges. PageRank scores each economist by their centrality — how many highly-connected peers reference them.</div>
+            <div class="pipe-title">4 &middot; Network analysis</div>
+            <div class="pipe-desc">A graph is built from the 1,800 connection edges. PageRank scores each economist by their centrality in the intellectual network.</div>
+          </div>
+        </div>
+        <div class="pipe-step">
+          <div class="pipe-icon">
+            <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><path d="M4 10h12M10 4l6 6-6 6"/></svg>
+          </div>
+          <div class="pipe-body">
+            <div class="pipe-title">5 &middot; AI summaries and keywords</div>
+            <div class="pipe-desc">Claude Haiku writes a contribution summary and generates 8 identifying keywords per economist, stored in the graph for offline access.</div>
           </div>
         </div>
         <div class="pipe-step">
@@ -464,8 +525,8 @@
             <svg viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" width="18" height="18"><circle cx="7" cy="7" r="4"/><path d="M12 12l5 5"/><path d="M7 5v4M5 7h4" stroke-width="1.6"/></svg>
           </div>
           <div class="pipe-body">
-            <div class="pipe-title">5 · Search indexing</div>
-            <div class="pipe-desc">MiniSearch (BM25) indexes every economist's name, school, and bio text. At search time, Wikipedia's API optionally enriches the query with broader context.</div>
+            <div class="pipe-title">6 &middot; Search indexing</div>
+            <div class="pipe-desc">MiniSearch (BM25) indexes names, schools, bios, summaries, and keywords. At search time, Wikipedia optionally enriches queries with broader conceptual context.</div>
           </div>
         </div>
       </div>
@@ -475,15 +536,15 @@
 
     <!-- Stage 1: Wikidata -->
     <div class="section">
-      <h2><span class="step-badge">1</span> Data collection — Wikidata</h2>
+      <h2><span class="step-badge">1</span> Data collection: Wikidata</h2>
       <p>
-        The dataset starts with <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a>, Wikipedia's structured knowledge base. Every economist with a Wikipedia article has a Wikidata entry that records structured facts: birth and death dates, a photo, doctoral advisor relationships, doctoral student relationships, and intellectual influences.
+        The dataset starts with <a href="https://www.wikidata.org" target="_blank" rel="noopener">Wikidata</a>, Wikipedia's structured knowledge base. Every economist with a Wikipedia article has a Wikidata entry recording structured facts: birth and death dates, a photo, doctoral advisor relationships, doctoral student relationships, and intellectual influences.
       </p>
       <p>
-        The scraper queries Wikidata's SPARQL endpoint and the MediaWiki API to collect this data for all economists. The result is 1,637 economists and 1,800 direct connections between them.
+        The scraper queries Wikidata's SPARQL endpoint and the MediaWiki API to collect this data. The result is 1,637 economists and 1,800 direct connections.
       </p>
       <div class="callout">
-        <p><strong>Why Wikidata instead of scraping Wikipedia infoboxes?</strong> Wikidata represents structured facts with explicit property types (P184 = doctoral advisor, P185 = doctoral student, P737 = influenced by). This makes it possible to distinguish connection <em>types</em> — knowing that Paul Samuelson was Robert Solow's doctoral advisor is much richer than just knowing they're "connected."</p>
+        <p><strong>Why Wikidata instead of scraping Wikipedia infoboxes?</strong> Wikidata represents structured facts with explicit property types. P184 is doctoral advisor, P185 is doctoral student, P737 is influenced by. This distinction matters: knowing that Paul Samuelson was Robert Solow's doctoral advisor is richer information than knowing they are "connected" in some undifferentiated sense.</p>
       </div>
     </div>
 
@@ -491,122 +552,212 @@
     <div class="section">
       <h2><span class="step-badge">2</span> Wikipedia text extraction</h2>
       <p>
-        For each economist with a Wikipedia page, the introductory section (the first few paragraphs before any section headers) is fetched using the <a href="https://en.wikipedia.org/api/rest_v1/" target="_blank" rel="noopener">Wikipedia REST API</a>. This gives a 200–450 character plain-text summary of who they are and what they worked on.
+        For each economist with a Wikipedia page, the introductory section (the paragraphs before any section headers) is fetched using the <a href="https://en.wikipedia.org/api/rest_v1/" target="_blank" rel="noopener">Wikipedia Action API</a>. This gives a plain-text summary of who each economist is and what they worked on.
       </p>
       <p>
-        This text serves two purposes: it provides the raw material for LLM school classification (Stage 3), and it is embedded directly in the graph data so the Research Assistant can perform full-text search without additional API calls at browse time.
+        This text serves two purposes. First, it is the raw material for LLM school classification in Stage 3. Second, it is embedded directly in the graph file so the Research Assistant can perform full-text search without additional API calls at browse time.
       </p>
       <div class="callout">
-        <p><strong>API limit note:</strong> The Wikipedia Action API silently caps <code>prop=extracts</code> responses at 20 articles per request, regardless of how many titles are sent. Batches are accordingly set to 20. This is not documented prominently in Wikipedia's API docs — it was discovered empirically.</p>
+        <p><strong>A note on batching:</strong> The Wikipedia Action API silently caps <code>prop=extracts</code> responses at 20 articles per request, regardless of how many titles are submitted. Batches are set to 20 accordingly. This cap is not prominently documented; it was discovered empirically during development.</p>
       </div>
     </div>
 
     <!-- Stage 3: LLM classification -->
     <div class="section">
-      <h2><span class="step-badge">3</span> School classification — LLM approach</h2>
+      <h2><span class="step-badge">3</span> School classification: LLM approach</h2>
       <p>
-        Assigning an economist to a school of thought is genuinely hard. Two problems make traditional keyword matching unreliable:
+        Assigning an economist to a school of thought is genuinely hard. Two problems make traditional keyword matching unreliable.
       </p>
-      <ul>
-        <li><strong>Polysemy:</strong> The word "development" means something entirely different in "development economics" (growth in low-income countries) vs. "financial development" (depth of capital markets). A keyword approach can't resolve this.</li>
-        <li><strong>Network contamination:</strong> Community detection (Louvain algorithm) groups economists by who they cite — but intellectual network proximity doesn't equal school membership. Raj Chetty co-publishes with behavioral economists but is primarily a labor economist; naive community detection dragged the entire Harvard labor cluster (Autor, Katz, Diamond) into the wrong school.</li>
-      </ul>
       <p>
-        The solution is to read what each economist's Wikipedia page actually says and classify it directly. Each Wikipedia intro is sent to <strong>Claude Haiku</strong> (Anthropic's fast, efficient model) with a structured prompt that lists all 20 valid schools and includes explicit disambiguation rules.
+        The first is polysemy. The word "development" means something entirely different in "development economics" (growth in low-income countries) versus "financial development" (depth of capital markets). A keyword approach cannot resolve this.
+      </p>
+      <p>
+        The second is network contamination. Community detection (Louvain algorithm) groups economists by who they cite, but intellectual network proximity does not equal school membership. Raj Chetty co-publishes with behavioral economists but is primarily a labor economist. Naive community detection dragged the entire Harvard labor economics cluster (Autor, Katz, Diamond) into the wrong school because of their network adjacency to behavioral researchers.
+      </p>
+      <p>
+        The solution is to read what each economist's Wikipedia page actually says and classify from that text directly. Each Wikipedia intro is sent to <strong>Claude Haiku</strong> with a structured prompt listing all 20 valid schools and including explicit disambiguation rules.
       </p>
 
       <h3>Seed economists</h3>
       <p>
-        156 economists are classified by hand as authoritative "seeds" and are never sent to the LLM. They serve as anchors: Keynes is Keynesian, Hayek is Austrian School, Samuelson is Classical/Neoclassical. The LLM classifies everyone else.
+        156 economists are classified by hand as authoritative seeds and are never sent to the LLM. They serve as anchors: Keynes is Keynesian, Hayek is Austrian School, Samuelson is Classical/Neoclassical. The LLM classifies everyone else.
       </p>
 
       <h3>Disambiguation rules in the prompt</h3>
-      <p>The system prompt gives the LLM explicit disambiguation guidance, for example:</p>
+      <p>The system prompt gives the LLM explicit guidance on edge cases. Some examples:</p>
       <ul>
-        <li>"Development" = developing country economics. <em>Not</em> "development of capital markets."</li>
-        <li>An economist can publish game theory papers but belong to "Chicago School" if their primary identity is Chicago-trained price theory.</li>
-        <li>If Wikipedia calls someone an "institutional economist" explicitly, that takes priority over topics they happen to write about.</li>
+        <li>"Development" refers to developing-country economics, not "development of capital markets."</li>
+        <li>An economist who publishes game theory papers may still belong to "Chicago School" if their primary identity is Chicago-trained price theory.</li>
+        <li>If Wikipedia explicitly calls someone an "institutional economist," that designation takes priority over the topics they happen to write about.</li>
       </ul>
 
       <div class="callout">
-        <p><strong>Coverage:</strong> 1,388 of 1,637 economists had Wikipedia intro text available. All 1,388 were classified. 863 got a different school assignment than the prior keyword-based approach. The remaining 249 economists either had no Wikipedia URL or insufficient text — they retain their seed assignment or prior classification.</p>
+        <p><strong>Coverage:</strong> 1,388 of 1,637 economists had Wikipedia intro text available. All 1,388 were classified. 863 received a different school assignment than the prior keyword-based approach. The remaining 249 economists either had no Wikipedia URL or insufficient text; they retain their seed assignment or prior classification.</p>
       </div>
 
       <h3>Result quality</h3>
       <p>
-        The LLM approach substantially outperforms keyword matching on edge cases. Tobias Adrian (an expert on financial stability and capital market risk, wrongly labeled "Development" by keyword matching) is correctly classified as "Finance." The Harvard labor economics cluster (Katz, Autor, Liebman, etc.) is no longer contaminated by its Louvain community membership.
+        The LLM approach substantially outperforms keyword matching on edge cases. Tobias Adrian (an expert on financial stability and capital market risk, wrongly labeled "Development" by keyword matching) is correctly classified as "Finance." The Harvard labor economics cluster is no longer contaminated by its Louvain community membership.
       </p>
     </div>
 
     <!-- Stage 4: Network analysis -->
     <div class="section">
-      <h2><span class="step-badge">4</span> Network analysis — PageRank</h2>
+      <h2><span class="step-badge">4</span> Network analysis: PageRank</h2>
       <p>
-        The 1,637 economists and 1,800 connections form an undirected graph. <a href="https://networkx.org" target="_blank" rel="noopener">NetworkX</a> is used to compute <strong>PageRank</strong> for each node — the same iterative algorithm Google uses to rank web pages.
+        The 1,637 economists and 1,800 connections form an undirected graph. <a href="https://networkx.org" target="_blank" rel="noopener">NetworkX</a> computes <strong>PageRank</strong> for each node, the same iterative algorithm Google introduced to rank web pages.
       </p>
       <p>
-        PageRank works recursively: an economist gets a higher score if they are connected to many others, <em>and</em> those others are themselves well-connected. This gives a nuanced measure of intellectual centrality that reflects both breadth of influence and the prestige of one's peers.
+        PageRank works recursively: a node receives a higher score when it is connected to many others, and when those others are themselves highly connected. The formal update equation is:
+      </p>
+
+      <div class="math-block">
+        <div class="math-formula">PR(u) = (1 - d) / N  +  d * SUM{ PR(v) / L(v)  for v in B(u) }</div>
+        <div class="math-legend">
+          <p><strong>PR(u)</strong> = PageRank score of node u (an economist)</p>
+          <p><strong>d</strong> = damping factor, set to 0.85 (probability of following a link rather than jumping randomly)</p>
+          <p><strong>N</strong> = total number of nodes in the graph (1,637)</p>
+          <p><strong>B(u)</strong> = set of nodes with an edge pointing to u (i.e., economists who reference u)</p>
+          <p><strong>L(v)</strong> = number of outbound edges from node v</p>
+        </div>
+      </div>
+
+      <p>
+        Scores converge through repeated iteration until the change between rounds falls below a tolerance threshold (10<sup>-6</sup>). The result is a continuous score for each economist reflecting both breadth of influence and the prestige of their peers.
       </p>
       <p>
-        PageRank scores are used throughout the interface: to rank search results, to determine which connections appear first in the detail panel, to size nodes in the mini network graph, and to weight the "Surprise me" random selection toward notable figures.
+        PageRank scores are used throughout the interface. They rank search results, determine which connections appear first in the detail panel, size nodes in the mini network diagram, and weight the "Surprise me" selection toward historically significant figures.
       </p>
 
       <h3>Typed connections (3,365 relationships)</h3>
       <p>
-        Beyond the raw connection graph, Wikidata records the <em>type</em> of each relationship. These are resolved into three categories for each economist:
-      </p>
-      <ul>
-        <li><strong>Doctoral Advisors</strong> — who supervised their PhD</li>
-        <li><strong>Doctoral Students</strong> — who they supervised</li>
-        <li><strong>Influences</strong> — thinkers explicitly credited as intellectual precursors</li>
-      </ul>
-      <p>
-        A fourth category, <strong>Also Connected</strong>, covers all remaining edges in the graph that don't fall into the above three — typically colleagues, frequent co-authors, or figures who appeared in each other's infoboxes without a specific relationship type.
+        Beyond the raw graph, Wikidata records the type of each relationship. These are resolved into three labeled categories in the detail panel: doctoral advisors, doctoral students, and intellectual influences. A fourth category ("Also Connected") captures all remaining edges that carry no specific relationship type in the data, typically colleagues or frequent co-authors.
       </p>
     </div>
 
-    <!-- Stage 5: Search -->
+    <!-- Stage 5: AI summaries -->
     <div class="section">
-      <h2><span class="step-badge">5</span> Search — MiniSearch + Wikipedia enrichment</h2>
+      <h2><span class="step-badge">5</span> AI summaries and keywords</h2>
       <p>
-        The Research Assistant uses <a href="https://lucaong.github.io/minisearch/" target="_blank" rel="noopener">MiniSearch</a>, a lightweight BM25 full-text search library (6 KB). On page load, it builds an in-browser index over every economist's name, school, and Wikipedia bio text. No server required.
+        For each economist with a Wikipedia article, Claude Haiku generates two things. The first is a one-paragraph contribution summary (three to five sentences) describing their most important ideas, theorems, and intellectual legacy in specific terms. The second is a set of eight identifying keywords drawn from the theories they created, the institutions they shaped, or the results they are best known for.
       </p>
       <p>
-        When you search "corporate governance," MiniSearch finds economists whose bios mention "principal-agent problem," "shareholder accountability," "fiduciary duty," and so on — because those are the actual terms in their Wikipedia articles, not hardcoded rules.
+        The summaries and keywords are generated offline as part of the build pipeline and stored directly in the graph data file. No API calls are made at browse time. This makes the site fully static and compatible with GitHub Pages hosting.
+      </p>
+
+      <h3>Generation approach</h3>
+      <p>
+        Wikipedia text (up to 3,000 characters of the article's introductory section) is fetched via the Wikipedia Action API in batches of 20. Each batch is then processed concurrently by Claude Haiku with up to 8 simultaneous API calls. A checkpoint file saves progress after each batch, making the process crash-safe and resumable.
+      </p>
+      <p>
+        The model is instructed to respond with valid JSON only: a "summary" field containing the paragraph and a "keywords" array of exactly eight strings. Responses are parsed strictly; any output that does not parse as JSON is retried up to three times before being skipped.
+      </p>
+
+      <h3>Coverage</h3>
+      <p>
+        1,636 of 1,637 economists received summaries and keywords. The single economist without coverage has no Wikipedia URL in the Wikidata record and could not be fetched. A URL-encoding issue discovered during the run (Wikipedia URLs containing percent-encoded characters such as <code>G%C3%A9rard_Debreu</code> were not being decoded before lookup) caused 97 economists to be missed on the first pass; this was corrected with <code>urllib.parse.unquote()</code> and a resume run covered the remaining cases.
+      </p>
+
+      <div class="callout">
+        <p><strong>Why not use Wikipedia bios for the same purpose?</strong> Wikipedia intros vary enormously in length, quality, and focus. The AI summaries are consistently structured and use active voice ("Arrow proved...," "Friedman argued..."), making them more useful for quick orientation. The Wikipedia bio text is preserved separately in the data for full-text search.</p>
+      </div>
+    </div>
+
+    <!-- Stage 6: Search -->
+    <div class="section">
+      <h2><span class="step-badge">6</span> Search: MiniSearch and Wikipedia enrichment</h2>
+      <p>
+        The Research Assistant uses <a href="https://lucaong.github.io/minisearch/" target="_blank" rel="noopener">MiniSearch</a>, a lightweight BM25 full-text search library that runs entirely in the browser. On page load, it builds an in-memory index over every economist's name, school, Wikipedia bio, AI-generated summary, and keywords. No server is required.
+      </p>
+
+      <p>The BM25 relevance score for a query <em>q</em> against a document <em>d</em> is:</p>
+
+      <div class="math-block">
+        <div class="math-formula">score(q, d) = SUM{ IDF(t) * f(t,d) * (k1 + 1)
+                              / [f(t,d) + k1 * (1 - b + b * |d| / avgdl)]
+                    for each term t in q }</div>
+        <div class="math-legend">
+          <p><strong>IDF(t)</strong> = inverse document frequency of term t (rare terms score higher)</p>
+          <p><strong>f(t, d)</strong> = frequency of term t in document d</p>
+          <p><strong>|d|</strong> = length of document d in tokens</p>
+          <p><strong>avgdl</strong> = average document length across the corpus</p>
+          <p><strong>k1</strong> = term saturation parameter (1.2 by default; controls how much repeated mentions add)</p>
+          <p><strong>b</strong> = length normalization parameter (0.75 by default; penalizes very long documents)</p>
+        </div>
+      </div>
+
+      <p>
+        Field weights are applied on top of BM25: name matches receive a boost of 4, keywords 3, summary 2, school 2, and bio text 1. This ensures that an economist whose name matches the query outranks one who merely mentions the query term in passing.
+      </p>
+      <p>
+        The final score for each result is a weighted combination of MiniSearch relevance and the economist's PageRank score, so prominent economists surface above obscure figures with the same keyword match.
       </p>
 
       <h3>Wikipedia query enrichment</h3>
       <p>
-        For broader conceptual queries, Econograph goes one step further: it fetches the Wikipedia article for your search query itself, extracts the first 600 characters of its intro, and runs a second MiniSearch pass using those expanded terms. A query for "history of corporate governance" pulls Wikipedia's intro for that topic, which mentions "agency theory," "hostile takeover," and "institutional investors" — terms that appear in relevant economists' bios and dramatically improve recall.
+        For broader conceptual queries, Econograph fetches the Wikipedia article for the search query itself, extracts the first 600 characters of its intro, and runs a second MiniSearch pass using those expanded terms. A query for "history of corporate governance" pulls Wikipedia's intro for that topic, which mentions "agency theory," "hostile takeover," and "institutional investors." Those terms appear in relevant economists' bios and substantially improve recall. When this enrichment fires, a small badge appears on the results.
+      </p>
+    </div>
+
+    <div class="divider"></div>
+
+    <!-- Intellectual Debates -->
+    <div class="section">
+      <h2>Intellectual Debates</h2>
+      <p>
+        The debates view surfaces six recurring intellectual tensions that have driven the development of economics as a discipline. Rather than treating the history of economic thought as a sequence of settled questions, this view frames it as a set of ongoing arguments, each of which has shifted in character but never been fully resolved.
+      </p>
+
+      <h3>How the six debates were chosen</h3>
+      <p>
+        The selection criteria were that a debate had to meet three conditions. It had to be genuinely unresolved, meaning that thoughtful economists today still disagree about it rather than having reached a stable consensus. It had to be traceable through at least 150 years of the discipline's history, with identifiable figures on recognizable sides. It also had to connect to something visible in contemporary policy or research, so that a reader could see why it still matters.
       </p>
       <p>
-        When this enrichment fires, a small <em>context expanded</em> badge appears on the results. The final score for each result is a weighted combination of MiniSearch relevance and PageRank score, so prominent economists surface above obscure ones with the same keyword match.
+        Applying those criteria produces six debates:
       </p>
+      <ul>
+        <li><strong>Rules vs. Discretion</strong>: whether policy should follow pre-committed rules or adapt to circumstances. This runs from the classical gold standard through Friedman's monetarism and the Lucas critique to modern inflation targeting.</li>
+        <li><strong>Markets vs. State</strong>: whether markets self-correct efficiently or require systematic intervention. The central tension between Smith and Keynes, now framed around externalities, information failures, and regulatory design.</li>
+        <li><strong>Rational vs. Behavioral Agents</strong>: whether economic agents form expectations efficiently or exhibit systematic cognitive biases. The conflict between rational expectations (Lucas, Sargent) and behavioral economics (Kahneman, Thaler) reshaped both macroeconomics and policy design.</li>
+        <li><strong>Growth vs. Inequality</strong>: whether aggregate growth and distributional outcomes can be treated separately. Kuznets proposed they could; Piketty's r&gt;g thesis argues they cannot.</li>
+        <li><strong>Exogenous vs. Endogenous Money</strong>: whether the central bank controls the money supply or whether credit creation is driven by private banking demand. Friedman's monetarism sits on one side; Minsky's financial instability hypothesis sits on the other.</li>
+        <li><strong>Free Trade vs. Industrial Policy</strong>: whether comparative advantage should determine specialization or whether strategic intervention can create new comparative advantages. Ricardo versus List, and today, Bhagwati versus Rodrik.</li>
+      </ul>
+
+      <h3>How economists are assigned to sides</h3>
+      <p>
+        The assignment process works in two layers. The first layer is a hand-curated set of named economists for each side of each debate. These are the figures most closely associated with each position in the historical literature. The second layer applies school-of-thought matching to extend coverage: economists in the Keynesian or Post-Keynesian schools are assigned to the "Discretion" side of the rules debate, for example, while Chicago School economists are assigned to the "Rules" side. Force-listed names always take precedence over school-based assignment. Economists whose work spans multiple debates appear in each one independently.
+      </p>
+
+      <div class="callout">
+        <p><strong>A note on simplification:</strong> Reducing an intellectual tradition to "two sides" necessarily loses nuance. Many economists occupy complex positions that shift across different policy questions. The debates view is designed to orient readers to the major fault lines, not to serve as a complete intellectual taxonomy.</p>
+      </div>
     </div>
 
     <div class="divider"></div>
 
     <!-- Limitations -->
     <div class="section">
-      <h2>Limitations & caveats</h2>
+      <h2>Limitations and caveats</h2>
 
       <div class="warning">
-        <p><strong>English Wikipedia bias.</strong> The dataset is entirely sourced from English Wikipedia and Wikidata. Economists whose work is primarily documented in other languages are underrepresented or absent, particularly thinkers from Latin America, East Asia, and continental Europe outside major research universities.</p>
+        <p><strong>English Wikipedia bias.</strong> The dataset is sourced entirely from English Wikipedia and Wikidata. Economists whose work is primarily documented in other languages are underrepresented or absent, particularly thinkers from Latin America, East Asia, and continental Europe outside major research universities.</p>
       </div>
 
       <ul>
         <li><strong>Coverage is not exhaustive.</strong> 1,637 economists is a large sample but not a census. Notable figures may be missing if they lack a structured Wikidata entry or English Wikipedia article.</li>
-        <li><strong>School assignments are single-label.</strong> Many economists work across multiple schools. Gregory Mankiw writes New Keynesian DSGE models and also Chicago-adjacent policy work; he gets one label. The classification reflects the dominant characterization in Wikipedia, not a multi-dimensional one.</li>
-        <li><strong>Wikidata relationship data is incomplete.</strong> Many advisor/student/influence relationships exist in the real world but are not recorded in Wikidata. The typed connections section reflects what was formally recorded, not what actually happened.</li>
-        <li><strong>LLM classification can make errors.</strong> Roughly 18 economists received non-canonical labels ("Health Economics," "Agricultural Economics") that were not in the valid school list and were mapped to "Other." A few plausible-sounding but incorrect classifications likely remain undetected.</li>
-        <li><strong>Historical figures have sparse data.</strong> Economists born before ~1850 often have minimal Wikipedia coverage, which limits both bio quality and LLM classification confidence.</li>
+        <li><strong>School assignments are single-label.</strong> Many economists work across multiple traditions. Gregory Mankiw writes New Keynesian DSGE models and also Chicago-adjacent policy work; he receives one label. The classification reflects the dominant characterization in Wikipedia, not a multidimensional profile.</li>
+        <li><strong>Wikidata relationship data is incomplete.</strong> Many advisor, student, and influence relationships exist in the real world but are not recorded in Wikidata. The typed connections section reflects what was formally recorded, not the full scope of actual intellectual relationships.</li>
+        <li><strong>LLM classification can make errors.</strong> Roughly 18 economists received non-canonical labels ("Health Economics," "Agricultural Economics") that were outside the valid school list and were mapped to "Other." A small number of plausible-sounding but incorrect classifications likely remain undetected.</li>
+        <li><strong>Historical figures have sparse data.</strong> Economists born before roughly 1850 often have minimal Wikipedia coverage, which limits both bio quality and LLM classification confidence.</li>
+        <li><strong>Debates assignments reflect one reading of the literature.</strong> Placing an economist on a "side" of an intellectual debate is inherently interpretive. The assignments reflect the dominant characterizations in secondary literature, not a claim that each figure held a simple or static position.</li>
       </ul>
     </div>
 
     <!-- Tech stack -->
     <div class="section">
       <h2>Technology</h2>
-      <p>The full pipeline is open source.</p>
+      <p>The full pipeline is open source at <a href="https://github.com/mmarteaga/econograph" target="_blank" rel="noopener">github.com/mmarteaga/econograph</a>.</p>
       <div class="tech-grid">
         <span class="tech-pill">Python 3</span>
         <span class="tech-pill">Scrapy</span>
@@ -615,12 +766,9 @@
         <span class="tech-pill">Wikipedia REST API</span>
         <span class="tech-pill">Claude Haiku (Anthropic)</span>
         <span class="tech-pill">D3.js v4</span>
-        <span class="tech-pill">MiniSearch</span>
+        <span class="tech-pill">MiniSearch (BM25)</span>
         <span class="tech-pill">GitHub Pages</span>
       </div>
-      <p style="margin-top:12px">
-        Source code: <a href="https://github.com/mmarteaga/econograph" target="_blank" rel="noopener">github.com/mmarteaga/econograph</a>
-      </p>
     </div>
 
     <div class="back-strip">
@@ -628,7 +776,7 @@
         <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="2" width="14" height="14"><path d="M10 3L5 8l5 5"/></svg>
         Back to explorer
       </a>
-      <span style="font-size:13px;color:#94a3b8">Econograph &mdash; History of Economic Thought</span>
+      <span style="font-size:13px;color:#94a3b8">Econograph | History of Economic Thought</span>
     </div>
 
   </div>
