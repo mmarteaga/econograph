@@ -54,6 +54,10 @@
             <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" width="12" height="12"><circle cx="8" cy="8" r="6"/><path d="M8 7v5M8 5.5v.5"/></svg>
             Methodology
           </a>
+          <button id="debates-open-btn" class="surprise-btn debates-sidebar-btn" title="Explore recurring intellectual debates">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.6" width="12" height="12"><path d="M2 4h12M2 8h8M2 12h10"/><circle cx="13" cy="8" r="2.5" fill="currentColor" stroke="none"/></svg>
+            Debates
+          </button>
         </div>
       </div>
     </aside>
@@ -245,11 +249,32 @@
     </div>
   </div>
 
+  <!-- ── INTELLECTUAL DEBATES OVERLAY ─────────────────────────── -->
+  <div id="debates-overlay" class="dt-overlay dt-hidden" role="dialog" aria-label="Intellectual Debates" aria-modal="true">
+    <div class="dt-panel">
+      <div class="dt-panel-hd">
+        <div>
+          <h1 class="dt-panel-title">Intellectual Debates</h1>
+          <p class="dt-panel-sub">Six recurring tensions that have shaped economic thought — and still shape policy today.</p>
+        </div>
+        <button id="debates-close-btn" class="dt-close-btn" aria-label="Close debates">
+          <svg viewBox="0 0 20 20" fill="currentColor" width="20" height="20">
+            <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd"/>
+          </svg>
+        </button>
+      </div>
+      <div class="dt-panel-body" id="debates-content">
+        <!-- populated by debates.js -->
+      </div>
+    </div>
+  </div>
+
   <script src="js/graph_v3.js"></script>
   <script src="https://d3js.org/d3.v4.min.js"></script>
   <script src="js/app.js" defer></script>
   <script src="js/landing.js" defer></script>
   <script src="https://cdn.jsdelivr.net/npm/minisearch@7/dist/umd/index.min.js"></script>
   <script src="js/research.js"></script>
+  <script src="js/debates.js"></script>
 </body>
 </html>
